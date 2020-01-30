@@ -68,7 +68,10 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="{%url 'profile' %}">Profile</a>
-              <a class="dropdown-item" href="javascript:{document.getElementById('logout').submit()}">Logout</a>
+            {% if user.is_staff %}
+            <a class="dropdown-item" href="/admin/">Django Admin</a>
+            {% endif %}
+            <a class="dropdown-item" href="javascript:{document.getElementById('logout').submit()}">Logout</a>
             </div>
             <form id="logout" method="POST" action="{%url 'logout' %}">
                 {%csrf_token%}
@@ -112,7 +115,7 @@
 
 <footer class="footer mt-auto py-1">
     <div class="container">
-      <span class="text-muted p-1 pl-sm-5">Designed in 2020 by Patrick Morrison. Perth, WA</span>
+      <span class="text-muted p-1 pl-sm-5">Designed in 2020 by Patrick Morrison. For Perth, WA</span>
     </div>
   </footer>
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
