@@ -59,7 +59,7 @@
     <div class="collapse navbar-collapse" id="navbarToggler">
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{%url 'about'%}">About</a>
+                <a class="nav-link mr-3" href="{%url 'about'%}">About</a>
               </li>    
           {% if user.is_authenticated %}
           <li class="nav-item dropdown">
@@ -77,12 +77,12 @@
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="{%url 'signup'%}">Sign Up</a>
+            <a class="nav-link mr-4" href="{%url 'signup'%}">Sign Up</a>
           </li>       
           <li class="nav-item">
             <form class="form-inline" method="POST" action = "{% url 'login' %}">
                 {%csrf_token%}
-                <div class="input-group ml-4">
+                <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">@</span>
                       </div>

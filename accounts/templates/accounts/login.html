@@ -2,11 +2,6 @@
 
 {%block content%}
 
-{%if error%}
-<br/>
-{{error}}
-<br/>
-{%endif%}
 <div class="container">
     <br/>
     <div class="card border-light mb-3 mx-auto" style="max-width: 30rem;">
@@ -16,6 +11,11 @@
             <div class="card-header">
                 Sign in
               </div> 
+              {%if error%}
+              <div class="card-body text-danger">
+                <p class="card-text">{{error}}</p>
+              </div>
+              {%endif%}
           <label for="username" class="sr-only">Username</label>
           <input type="text" id="username" class="form-control" placeholder="Username" required autofocus name = "username">
           <label for="inputPassword" class="sr-only">Password</label>
