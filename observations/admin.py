@@ -1,3 +1,5 @@
-from django.contrib import admin
+from django.contrib.gis import admin
+from .models import Site, Observation
 
-# Register your models here.
+admin.site.register(Site, admin.OSMGeoAdmin)
+admin.site.register(Observation, admin.OSMGeoAdmin)
