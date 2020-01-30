@@ -4,3 +4,6 @@ from django.shortcuts import render
 
 def map(request):
     return render(request, 'observations/map.html')
+
+def about(request):
+    return render(request, 'observations/about.html')
