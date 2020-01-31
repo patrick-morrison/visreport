@@ -14,7 +14,11 @@ class Site(models.Model):
         
     def current_vis(self):
         site = Observation.objects.filter(site=self.site_code)
-        return site.order_by('when_observed').first().visability
+        return site.latest('when_observed').visability
+
+    def last_updated(self):
+        site = Observation.objects.filter(site=self.site_code)
+        return site.latest('when_observed').when_observed
         
 
 class Observation(models.Model):

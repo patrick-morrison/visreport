@@ -12,17 +12,26 @@
     <!-- style tag and django-leaflet tag here -->
     <style media="screen">
         #map { width:100%; height:100% }
-        .leaflet-tooltip-pane .text {
-        color: black; 
-        font-weight: bold;
+        .leaflet-tooltip-pane .label {
+        color: white; 
+        font-weight: bolder;
+        font-style: italic;
         background: transparent;
         border:0;
         box-shadow: none;
-        font-size:1em;
-}
+        font-size:1.1em;
+        font-family: "Arial Narrow", sans-serif;
+        .leaflet-popup-tip,
+        .leaflet-popup-content-wrapper {
+        background: #e93434;
+        color: #ffffff;
+        }
+
+        .leaflet-popup .text {
+         background-color: #black
+        }
+
       </style>
-
-
 
     <script src="{% static 'bower_components/leaflet-ajax/dist/leaflet.ajax.min.js' %}"></script>
     <script src="{% static 'bower_components/spin.js/spin.min.js' %}"></script>
@@ -38,14 +47,20 @@
     {%for site in sites.all%}
         vis["{{site.site_code}}"] = "{{site.current_vis}}";
     {%endfor%}
+    
+    var updated = {}
+
+    {%for site in sites.all%}
+    updated["{{site.site_code}}"] = "{{site.last_updated}}";
+    {%endfor%}
 
 
     function geojsonMarkerOptions(feature) {
         return {
-        radius: 20,
+        radius: 16,
         fillColor: getColor(vis[feature.properties.pk.toString()]),
         color: "#000",
-        weight: 1,
+        weight: 0,
         opacity: 1,
         fillOpacity: 1
                    
@@ -53,11 +68,11 @@
     }
 
     function getColor(v) {
-    console.log(v)
-    return v > 20 ? '#0275d8' :
-           v > 10 ? '#5cb85c' :
-           v > 5  ? '#f0ad4e' :
-                    '#d9534f' ;
+    return v > 19.9 ? '#0275d8' :
+           v > 9.9  ? '#5cb85c' :
+           v > 4.9  ? '#f0ad4e' :
+           v > 0.1  ? '#d9534f' :
+                     '#868e96'  ;
     }
 
         function map_init_basic (map, options) {
@@ -67,23 +82,23 @@
          },
     onEachFeature: function(feature, layer) {
 
-        var text = L.tooltip({
+        var label = L.tooltip({
             permanent: true,
             direction: 'center',
-            className: 'text'
+            className: 'label'
         })
         .setContent(feature.properties.pk.toString())
         .setLatLng(layer.getLatLng());
-        text.addTo(map);
+        label.addTo(map);
         
-        var text2 = L.tooltip({
-            direction: 'auto',
-            className: 'text2',
-            sticky: true
+        var text = L.popup({
+            direction: 'right',
+            className: 'text',
+            closeOnClick: true,
         })
-        .setContent(feature.properties.site_name.toString() + "Vis = "+ vis[feature.properties.pk.toString()])
+        .setContent("<b>" + feature.properties.site_name.toString() + "</b> <br /> Visability: "+ vis[feature.properties.pk.toString()] + "m<br />" + updated[feature.properties.pk.toString()])
         .setLatLng(layer.getLatLng());
-        layer.bindTooltip(text2);
+        layer.bindPopup(text);
     
     }
 }).addTo(map);
