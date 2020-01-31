@@ -20,7 +20,7 @@ class Observation(models.Model):
     conditions = models.CharField(max_length=225)
     visability = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comments = models.CharField(max_length=225)
+    comments = models.CharField(max_length=225, null=True, blank=True)
 
     def __str__(self):
         return str(self.when_observed) +"_"+ self.site.site_name + "_by_"+ self.user.username

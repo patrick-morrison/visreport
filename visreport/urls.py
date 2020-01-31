@@ -15,13 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import include, url
 from django.conf import settings
 from django.conf.urls.static import static
 from observations import views
+from observations.views import sites_view, MapView
 
 urlpatterns = [
-    path('', views.map, name='map'),
+    url(r'^$', MapView.as_view(), name='map'),
     path('about/', views.about, name='about'),
     path('accounts/',include('accounts.urls')),
     path('admin/', admin.site.urls),
+    url(r'^sites.data/', sites_view, name='sites'),
 ]+  static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

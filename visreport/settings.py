@@ -73,6 +73,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'visreport.wsgi.application'
 
+SERIALIZATION_MODULES = {
+     "geojson": "django.contrib.gis.serializers.geojson",
+  }
+
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
