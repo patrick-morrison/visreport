@@ -1,48 +1,82 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
+{%if error%}
+<br/>
+{{error}}
+<br/>
+{%endif%}
+
+<head>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+
+</head>
 
 <div class="container">
     <br />
     <h1 class="display-4">{{Sites.site_name}} <small class="text-muted"> ({{Sites.site_code}})</small> </h1>
     <hr />
-    <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-    <p>
-      <a href="#" class="btn btn-primary my-2">Main call to action</a>
-      <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-    </p>
+    <p class="lead text-muted">{{Sites.site_description}}</p>
   </div>
 
-<div class="container">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Visability (m)</th>
-        <th scope="col">Conditions</th>
-        <th scope="col">Comment</th>
-        <th scope="col">Reported by</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%for Observation in Observations%}
-        {%if Observation.visability > 19.9%}    
-        <tr class="table-primary">
-            {%elif Observation.visability > 9.9%}    
-        <tr class="table-success">
-            {%elif Observation.visability > 4.9%}    
-        <tr class="table-warning">
-            {%else%}
-        <tr class="table-danger">
-            {%endif%} 
-        <th scope="row">{{Observation.when_observed}}</th>
-        <td>{{Observation.visability}}</td>
-        <td>{{Observation.conditions}}</td>
-        <td>{{Observation.comment}}</td>
-        <td>@{{Observation.user.username}}</td>
-      </tr>
-      {%endfor%}
-    </tbody>
-  </table>
+  <div class="container">
 </div>
+
+<div class="container">
+    <table class="table table-striped"> 
+      {% if not user.is_authenticated %}
+      <caption><a href="{% url 'login' %}">Sign in to add reports</a></caption>
+      {% endif %}
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Visability (m)</th>
+          <th scope="col">Conditions</th>
+          <th scope="col">Comment</th>
+          <th scope="col">Reported by</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        {% if user.is_authenticated %}
+        <form class="form-inline" method="POST" action = "{% url 'detail' Sites.site_code%}">
+            {% csrf_token %}
+            <tr>
+                <td><div class="col-xs-1"><input class = "form-control" type="text" name="when_observed"></div></td>
+                <td><div class="col-xs-1"></div><input class = "form-control" type="number" name="visability" min="0" max="25"><div class="col-xs-2"></div></td>
+                <td><div class="col-xs-1"><select class="form-control" name="conditions">
+                    <option>Fair</option>
+                    <option>Fair</option>
+                  </select></div></td>
+                <td><div class="col-xs-1"><input class = "form-control" type="text" name="comments"></div></td>
+                <td><div class="col-xs-1"><input class = "btn btn-primary" type="submit" value="Add"/></div></td>
+            </tr>
+        <form>
+        {% endif %}
+  
+      {%for Observation in Observations%}
+          {%if Observation.visability > 19.9%}    
+          <tr class="table-primary">
+              {%elif Observation.visability > 9.9%}    
+          <tr class="table-success">
+              {%elif Observation.visability > 4.9%}    
+          <tr class="table-warning">
+              {%else%}
+          <tr class="table-danger">
+              {%endif%} 
+          <th scope="row">{{Observation.when_observed}}</th>
+          <td>{{Observation.visability}}</td>
+          <td>{{Observation.conditions}}</td>
+          <td>{{Observation.comment}}</td>
+          <td>@{{Observation.user.username}}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

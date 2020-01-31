@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.serializers import serialize
 from .models import Site, Observation
 from django.http import HttpResponse
@@ -23,7 +23,17 @@ class MapView(generic.TemplateView):
         return context
 
 def detail(request, site_code):
-    site_code_up = site_code.upper()
-    DiveSite = get_object_or_404(Site, pk=site_code_up)
-    Observations = Observation.objects.all().filter(site=site_code_up)
-    return render(request, 'observations/detail.html', {"Sites": DiveSite, "Observations":Observations})
+    if request.method == 'POST':
+            Observations = Observation()
+            Observations.site = get_object_or_404(Site, pk=site_code)
+            Observations.when_observed = request.POST['when_observed']
+            Observations.conditions = request.POST['conditions']
+            Observations.visability = request.POST['visability']
+            Observations.user = request.user
+            Observations.save()
+            return redirect("/"+str(Observations.site.site_code))
+    else:
+        site_code_up = site_code.upper()
+        DiveSite = get_object_or_404(Site, pk=site_code_up)
+        Observations = Observation.objects.all().filter(site=site_code_up)
+        return render(request, 'observations/detail.html', {"Sites": DiveSite, "Observations":Observations})

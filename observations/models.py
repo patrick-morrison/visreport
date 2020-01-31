@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class Site(models.Model):
     site_code = models.CharField(max_length=3, default='XXX', primary_key=True)
     site_name = models.CharField(max_length=50)
+    site_description = models.TextField(max_length=225, null=True, blank=True)
     site_location = models.PointField()
     site_date_added = models.DateField()
     
