@@ -39,23 +39,31 @@
         vis["{{site.site_code}}"] = "{{site.current_vis}}";
     {%endfor%}
 
-    console.log(vis)
 
-    var geojsonMarkerOptions = {
+    function geojsonMarkerOptions(feature) {
+        return {
         radius: 20,
-        fillColor: "#ff7800",
+        fillColor: getColor(vis[feature.properties.pk.toString()]),
         color: "#000",
         weight: 1,
         opacity: 1,
-        fillOpacity: 0.8
+        fillOpacity: 1
                    
     };
+    }
 
+    function getColor(v) {
+    console.log(v)
+    return v > 20 ? '#0275d8' :
+           v > 10 ? '#5cb85c' :
+           v > 5  ? '#f0ad4e' :
+                    '#d9534f' ;
+    }
 
         function map_init_basic (map, options) {
               var geojsonSiteLayer = new L.GeoJSON.AJAX("{% url 'sites' %}", {
             pointToLayer: function (feature, latlng) {
-             return L.circleMarker(latlng, geojsonMarkerOptions);
+             return L.circleMarker(latlng, geojsonMarkerOptions(feature));
          },
     onEachFeature: function(feature, layer) {
 
