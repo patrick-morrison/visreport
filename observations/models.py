@@ -8,10 +8,13 @@ class Site(models.Model):
     site_name = models.CharField(max_length=50)
     site_location = models.PointField()
     site_date_added = models.DateField()
-
     
     def __str__(self):
-        return self.site_name
+        return self.site_name + " (" + self.site_code + ")"
+        
+    def current_vis(self):
+        site = Observation.objects.filter(site=self.site_code)
+        return site.order_by('when_observed').first().visability
         
 
 class Observation(models.Model):
