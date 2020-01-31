@@ -148,3 +148,7 @@ LEAFLET_CONFIG = {
   'MIN_ZOOM': 9,
   'MAX_ZOOM': 12,
 }
+
+try from local_settings import *
+except ImportError:
+    pass
