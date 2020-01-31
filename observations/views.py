@@ -28,6 +28,7 @@ def detail(request, site_code):
             Observations.site = get_object_or_404(Site, pk=site_code)
             Observations.when_observed = request.POST['when_observed']
             Observations.conditions = request.POST['conditions']
+            Observations.comments = request.POST['comments']
             Observations.visability = request.POST['visability']
             Observations.user = request.user
             Observations.save()
@@ -35,5 +36,5 @@ def detail(request, site_code):
     else:
         site_code_up = site_code.upper()
         DiveSite = get_object_or_404(Site, pk=site_code_up)
-        Observations = Observation.objects.all().filter(site=site_code_up)
+        Observations = Observation.objects.all().filter(site=site_code_up).order_by('-when_observed')
         return render(request, 'observations/detail.html', {"Sites": DiveSite, "Observations":Observations})
