@@ -12,8 +12,9 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+
 
 </head>
 
@@ -47,6 +48,9 @@ $(document).ready(function() {
     <p class="lead text-muted">{{Sites.site_description}}</p>
   </div>
 
+</div>
+
+
   <div class="container">
 </div>
 
@@ -70,7 +74,21 @@ $(document).ready(function() {
         <form class="form-horizontal" method="POST" action = "{% url 'detail' Sites.site_code%}">
             {% csrf_token %}
             <tr>
-                <td><div class="col-xs-1"><input class = "form-control" type="text" name="when_observed" required></div></td>
+                <td>
+                    
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control datetimepicker-input" id="datetimepicker" data-toggle="datetimepicker" data-target="#datetimepicker" name="when_observed" required/>
+                            </div>
+                            <script type="text/javascript">
+                                $('#datetimepicker').datetimepicker({ format: "YYYY-MM-DD HH:mm"})
+                            </script>
+                        </div>
+                    </div>
+
+                
+                </td>
                 <td><div class="col-xs-1"></div><input class = "form-control" type="number" name="visability" min="0" max="25" required><div class="col-xs-2"></div></td>
                 <td><div class="col-xs-1"><select class="form-control" name="conditions" required>
                     <option>Glassy</option>
@@ -96,13 +114,16 @@ $(document).ready(function() {
           <tr class="table-danger">
               {%endif%} 
           <th scope="row">{{Observation.when_observed}}
-            {%if Observation.user.username == request.user.username%}  
-            <a href="javascript:{document.getElementById('delete-{{Observation.pk}}').submit()}"><span class="oi oi-trash"></span></th></a>
+
+            {%if Observation.user.username == request.user.username%}
 
             <form id="delete-{{Observation.pk}}" method="POST" action="{% url 'delete' Observation.pk%}">
                 {%csrf_token%}
                 <input type="hidden">
                 </form>
+
+            <a href="javascript:{document.getElementById('delete-{{Observation.pk}}').submit()}"><span class="oi oi-trash"></span></th></a>
+            
                 {%endif%} 
           <td >{{Observation.visability}}</td >
           <td>{{Observation.conditions}}</td>
