@@ -26,5 +26,6 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('accounts/',include('accounts.urls')),
     path('admin/', admin.site.urls),
+    path('<str:site_code>', views.detail, name = "detail"),
     url(r'^sites.data/', sites_view, name='sites'),
 ]+  static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

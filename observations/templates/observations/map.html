@@ -19,18 +19,9 @@
         background: transparent;
         border:0;
         box-shadow: none;
-        font-size:1.1em;
+        font-size:1.1em
         font-family: "Arial Narrow", sans-serif;
-        .leaflet-popup-tip,
-        .leaflet-popup-content-wrapper {
-        background: #e93434;
-        color: #ffffff;
-        }
-
-        .leaflet-popup .text {
-         background-color: #black
-        }
-
+        
       </style>
 
     <script src="{% static 'bower_components/leaflet-ajax/dist/leaflet.ajax.min.js' %}"></script>
@@ -96,7 +87,7 @@
             className: 'text',
             closeOnClick: true,
         })
-        .setContent("<b>" + feature.properties.site_name.toString() + "</b> <br /> Visability: "+ vis[feature.properties.pk.toString()] + "m<br />" + updated[feature.properties.pk.toString()])
+        .setContent("<a href=" + feature.properties.pk.toString() + "> <b>" + feature.properties.site_name.toString() + "</b></a> <br /> Visability: "+ vis[feature.properties.pk.toString()] + "m<br />" + updated[feature.properties.pk.toString()])
         .setLatLng(layer.getLatLng());
         layer.bindPopup(text);
     

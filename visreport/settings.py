@@ -58,7 +58,7 @@ ROOT_URLCONF = 'visreport.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["visreport","visreport/templates","visreport/accounts","visreport/accounts/templates/accounts"],
+        'DIRS': ["visreport","visreport/templates","visreport/accounts","visreport/accounts/templates/accounts", "observations/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
