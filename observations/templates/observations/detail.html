@@ -70,21 +70,22 @@ $(document).ready(function() {
         <form class="form-horizontal" method="POST" action = "{% url 'detail' Sites.site_code%}">
             {% csrf_token %}
             <tr>
-                <td><div class="col-xs-1"><input class = "form-control" type="text" name="when_observed"></div></td>
-                <td><div class="col-xs-1"></div><input class = "form-control" type="number" name="visability" min="0" max="25"><div class="col-xs-2"></div></td>
-                <td><div class="col-xs-1"><select class="form-control" name="conditions">
+                <td><div class="col-xs-1"><input class = "form-control" type="text" name="when_observed" required></div></td>
+                <td><div class="col-xs-1"></div><input class = "form-control" type="number" name="visability" min="0" max="25" required><div class="col-xs-2"></div></td>
+                <td><div class="col-xs-1"><select class="form-control" name="conditions" required>
                     <option>Glassy</option>
                     <option selected>Fair</option>
                     <option>Windy</option>
                     <option>Rough</option>
                   </select></div></td>
-                <td><div class="col-xs-1"><input class = "form-control" type="text" name="comments"></div></td>
+                <td><div class="col-xs-1"><input class = "form-control" type="text" name="comments" placeholder="Optional"></div></td>
                 <td><div class="col-xs-1"><input class = "btn btn-primary" type="submit" value="Add"/></div></td>
             </tr>
         <form>
         {% endif %}
   
       {%for Observation in Observations%}
+
           {%if Observation.visability > 19.9%}    
           <tr class="table-primary">
               {%elif Observation.visability > 9.9%}    
@@ -94,14 +95,23 @@ $(document).ready(function() {
               {%else%}
           <tr class="table-danger">
               {%endif%} 
-          <th scope="row">{{Observation.when_observed}}</th>
+          <th scope="row">{{Observation.when_observed}}
+            {%if Observation.user.username == request.user.username%}  
+            <a href="javascript:{document.getElementById('delete-{{Observation.pk}}').submit()}"><span class="oi oi-trash"></span></th></a>
+
+            <form id="delete-{{Observation.pk}}" method="POST" action="{% url 'delete' Observation.pk%}">
+                {%csrf_token%}
+                <input type="hidden">
+                </form>
+                {%endif%} 
           <td >{{Observation.visability}}</td >
           <td>{{Observation.conditions}}</td>
           <td>{{Observation.comments}}</td>
-          <td>@{{Observation.user.username}}</td>
+          <td>@{{Observation.user.username}} </span></td>
         </tr>
         {%endfor%}
       </tbody>
     </table>
   </div>
+</form>
 {% endblock %}

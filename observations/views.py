@@ -38,3 +38,12 @@ def detail(request, site_code):
         DiveSite = get_object_or_404(Site, pk=site_code_up)
         Observations = Observation.objects.all().filter(site=site_code_up).order_by('-when_observed')
         return render(request, 'observations/detail.html', {"Sites": DiveSite, "Observations":Observations})
+
+
+def delete(request, pk):
+        observation = get_object_or_404(Observation, pk=pk)
+        if request.method == 'POST':
+            observation.delete()
+            return redirect("/"+str(observation.site.site_code))
+        else:
+            return redirect("/"+str(observation.site.site_code))
