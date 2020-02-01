@@ -14,6 +14,10 @@ def sites_view(request):
     points_as_geojson = serialize('geojson', Site.objects.all())
     return HttpResponse(points_as_geojson, content_type='json')
 
+def reports_view(request):
+    points_as_geojson = serialize('geojson', Observation.objects.all())
+    return HttpResponse(points_as_geojson, content_type='json')
+
 class MapView(generic.TemplateView):
     template_name = 'observations/map.html'
    
