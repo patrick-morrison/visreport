@@ -33,7 +33,7 @@ def detail(request, site_code):
             Observations.when_observed = request.POST['when_observed']
             Observations.conditions = request.POST['conditions']
             Observations.comments = request.POST['comments']
-            Observations.visability = request.POST['visability']
+            Observations.visibility = request.POST['visibility']
             Observations.user = request.user
             Observations.save()
             return redirect("/"+str(Observations.site.site_code))

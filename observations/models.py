@@ -15,7 +15,7 @@ class Site(models.Model):
         
     def current_vis(self):
         site = Observation.objects.filter(site=self.site_code)
-        return site.latest('when_observed').visability
+        return site.latest('when_observed').visibility
 
     def last_updated(self):
         site = Observation.objects.filter(site=self.site_code)
@@ -26,7 +26,7 @@ class Observation(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     when_observed = models.DateTimeField()
     conditions = models.CharField(max_length=225)
-    visability = models.IntegerField()
+    visibility = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comments = models.CharField(max_length=225, null=True, blank=True)
 
