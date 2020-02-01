@@ -19,7 +19,7 @@ from django.conf.urls import include, url
 from django.conf import settings
 from django.conf.urls.static import static
 from observations import views
-from observations.views import sites_view, MapView
+from observations.views import sites_view, reports_view, MapView
 
 urlpatterns = [
     url(r'^$', MapView.as_view(), name='map'),
@@ -28,5 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('<str:site_code>', views.detail, name = "detail"),
     path('delete/<int:pk>', views.delete, name = "delete"),
-    url(r'^sites.data/', sites_view, name='sites'),
+    url(r'^sites.json/', sites_view, name='sites'),
+    url(r'^reports.json/', reports_view, name='reports-json'),
 ]+  static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
