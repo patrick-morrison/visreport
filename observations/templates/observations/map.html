@@ -96,7 +96,7 @@
             className: 'text',
             closeOnClick: true,
         })
-        .setContent("<a href=" + feature.properties.pk.toString() + "> <b>" + feature.properties.site_name.toString() + "</b></a> <br /> visibility: "+ vis[feature.properties.pk.toString()] + "m<br />" + updated[feature.properties.pk.toString()])
+        .setContent("<a href=" + feature.properties.pk.toString() + "> <b>" + feature.properties.site_name.toString() + "</b></a> <br /> Visibility: "+ vis[feature.properties.pk.toString()] + "m<br />" + updated[feature.properties.pk.toString()])
         .setLatLng(layer.getLatLng());
         layer.bindPopup(text);
     
