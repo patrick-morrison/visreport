@@ -57,7 +57,7 @@ $(document).ready(function() {
       <thead>
         <tr>
           <th scope="col">Date</th>
-          <th scope="col">Visability (m)</th>
+          <th scope="col">visibility (m)</th>
           <th scope="col">Conditions</th>
           <th scope="col">Comment</th>
           <th scope="col">Reported by</th>
@@ -84,7 +84,7 @@ $(document).ready(function() {
 
                 
                 </td>
-                <td><div class="col-xs-1"></div><input class = "form-control" type="number" name="visability" min="0" max="25" required><div class="col-xs-2"></div></td>
+                <td><div class="col-xs-1"></div><input class = "form-control" type="number" name="visibility" min="0" max="25" required><div class="col-xs-2"></div></td>
                 <td><div class="col-xs-1"><select class="form-control" name="conditions" required>
                     <option>Glassy</option>
                     <option selected>Fair</option>
@@ -99,11 +99,11 @@ $(document).ready(function() {
   
       {%for Observation in Observations%}
 
-          {%if Observation.visability > 19.9%}    
+          {%if Observation.visibility > 19.9%}    
           <tr class="table-primary">
-              {%elif Observation.visability > 9.9%}    
+              {%elif Observation.visibility > 9.9%}    
           <tr class="table-success">
-              {%elif Observation.visability > 4.9%}    
+              {%elif Observation.visibility > 4.9%}    
           <tr class="table-warning">
               {%else%}
           <tr class="table-danger">
@@ -120,7 +120,7 @@ $(document).ready(function() {
             <a href="javascript:{document.getElementById('delete-{{Observation.pk}}').submit()}"><span class="oi oi-trash"></span></th></a>
             
                 {%endif%} 
-          <td >{{Observation.visability}}</td >
+          <td >{{Observation.visibility}}</td >
           <td>{{Observation.conditions}}</td>
           <td>{{Observation.comments}}</td>
           <td>@{{Observation.user.username}} </span></td>
