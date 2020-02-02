@@ -26,11 +26,15 @@
       <style>
         .leaflet-popup-tip,
         .leaflet-popup-content-wrapper {
-            background:#f7f7f7;
-            color: black;
-            font-size:1.3em
-            }
-            
+            background:#292b2c;
+            color: white;
+            font-size:1.3em;
+            line-height:80px;
+            border-right:15px solid transparent;
+            box-shadow: none !important;
+        }
+}
+
       </style>
 
     <script src="{% static 'bower_components/leaflet-ajax/dist/leaflet.ajax.min.js' %}"></script>
@@ -45,25 +49,21 @@
     var vis = {}
 
     {%for site in sites.all%}
-        vis["{{site.site_code}}"] = "{{site.current_vis}}";
+        site_vis_json = '{{site.current_vis}}'.replace(/&#x27;/g, '"');
+        console.log(site_vis_json)
+        site_vis = JSON.parse(site_vis_json);
+        vis["{{site.site_code}}"] = site_vis;
     {%endfor%}
     
-    var updated = {}
-
-    {%for site in sites.all%}
-    updated["{{site.site_code}}"] = "{{site.last_updated}}";
-    {%endfor%}
-
 
     function geojsonMarkerOptions(feature) {
         return {
         radius: 16,
-        fillColor: getColor(vis[feature.properties.pk.toString()]),
+        fillColor: getColor(vis[feature.properties.pk.toString()]['obs1']['Vis']),
         color: "#000",
         weight: 0,
         opacity: 1,
-        fillOpacity: 1
-                   
+        fillOpacity: 1,
     };
     }
 
@@ -81,6 +81,8 @@
              return L.circleMarker(latlng, geojsonMarkerOptions(feature));
          },
     onEachFeature: function(feature, layer) {
+        var vis_site = vis[feature.properties.pk.toString()]
+        var current_vis = vis_site['obs1']['Vis']
 
         var label = L.tooltip({
             permanent: true,
@@ -92,11 +94,12 @@
         label.addTo(map);
         
         var text = L.popup({
-            direction: 'right',
             className: 'text',
             closeOnClick: true,
+            maxWidth : 200,
+            direction: 'top',
         })
-        .setContent("<a href=" + feature.properties.pk.toString() + "> <b>" + feature.properties.site_name.toString() + "</b></a> <br /> Visibility: "+ vis[feature.properties.pk.toString()] + "m<br />" + updated[feature.properties.pk.toString()])
+        .setContent("<a style='color:white' href=" + feature.properties.pk.toString() + "> <h4> <i>" + feature.properties.site_name.toString() + "</h4></i></a> <font color="+ getColor(vis_site['obs1']['Vis']) + "><u>" + vis_site['obs1']['Date'] + "</u> <br />Visibility: " + vis_site['obs1']['Vis'] + "m <br /><font color="+ getColor(vis_site['obs2']['Vis']) + "><u>" + vis_site['obs2']['Date'] + "</u> <br />Visibility: " + vis_site['obs2']['Vis'] + "m <br /> <font color="+ getColor(vis_site['obs3']['Vis']) + "> <u>" + vis_site['obs3']['Date'] + "</u> <br />Visibility: " + vis_site['obs3']['Vis'] + "m <br /> <u>")
         .setLatLng(layer.getLatLng());
         layer.bindPopup(text);
     
