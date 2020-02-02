@@ -16,7 +16,7 @@ class Site(models.Model):
     def current_vis(self):
         site = Observation.objects.filter(site=self.site_code).order_by('-when_observed')
         try:
-            return {"obs1": {"Date":str(site[0].when_observed)[:16],"Vis":site[0].visibility}, "obs2": {"Date":str(site[1].when_observed)[:16],"Vis":site[1].visibility}, "obs3": {"Date":str(site[0].when_observed)[:16],"Vis":site[0].visibility}}
+            return {"obs1": {"Date":str(site[0].when_observed)[:16],"Vis":site[0].visibility}, "obs2": {"Date":str(site[1].when_observed)[:16],"Vis":site[1].visibility}, "obs3": {"Date":str(site[2].when_observed)[:16],"Vis":site[2].visibility}}
         except IndexError:
             try:
                 return {"obs1": {"Date":str(site[0].when_observed)[:16],"Vis":site[0].visibility}, "obs2": {"Date":"No data","Vis":"No data"}, "obs3": {"Date":"No data","Vis":"No data"}}
