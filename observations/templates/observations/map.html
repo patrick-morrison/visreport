@@ -63,8 +63,7 @@
         color: "#000",
         weight: 0,
         opacity: 1,
-        fillOpacity: 1
-                   
+        fillOpacity: 1,
     };
     }
 
@@ -84,7 +83,6 @@
     onEachFeature: function(feature, layer) {
         var vis_site = vis[feature.properties.pk.toString()]
         var current_vis = vis_site['obs1']['Vis']
-        console.log(current_vis)
 
         var label = L.tooltip({
             permanent: true,
