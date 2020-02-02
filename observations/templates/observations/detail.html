@@ -24,12 +24,14 @@ $(document).ready(function() {
 
         // Function to handle changes to style classes based on window width
         function checkWidth() {
-        if ($window.width() < 980) {
+        if ($window.width() < 992) {
             $('#table').addClass('table-sm');
+            $('#mobile-add-report').show();
             };
 
-        if ($window.width() >= 980) {
+        if ($window.width() >= 992) {
             $('#table').removeClass('table-sm');
+            $('#mobile-add-report').hide();
         }
     }
 
@@ -49,18 +51,77 @@ $(document).ready(function() {
   </div>
 </div>
 
+{% if user.is_authenticated %}
+
+<div class="container" id = "mobile-add-report">
+    <div class="card">
+        <div class="card-header">
+            <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapse-mobile-add-report" aria-expanded="true" aria-controls="collapse-mobile-add-report">
+                Contribute Report
+              </button>
+          </div>
+          <div class="collapse show" id="collapse-mobile-add-report">
+        <div class="card-body">
+    <form class="form-horizontal" method="POST" action = "{% url 'detail' Sites.site_code%}">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-8">
+              <label for="datetimepicker">Date/Time</label>
+                <input type="text" class="form-control datetimepicker-input" id="datetimepicker1" data-toggle="datetimepicker" data-target="#datetimepicker1" name="when_observed" placeholder="YYYY-MM-DD HH:mm" required/>
+
+                <script type="text/javascript">
+                      $('#datetimepicker1').datetimepicker({ format: "YYYY-MM-DD HH:mm"})
+                  </script>
+                </div>
+
+            <div class="form-group col-4">
+                    <label for="visibility">Visibility (m)</label>
+                    <input class = "form-control" type="number" id="visibility" name="visibility" min="0" max="25" placeholder="0-25" required>
+                  </div>
+                </div>
+            <div class="form-row">  
+            <div class="form-group col-8">
+                    <label for="comments">Comments</label>
+                    <input class = "form-control" type="text" name="comments" id="comments" maxlength="30" placeholder="Optional">
+                  </div>
+            <div class="form-group col-4">
+            <label for="conditions">Conditions</label>
+            <select class="form-control" name="conditions" id="conditions" required>
+                <option>Glassy</option>
+                <option selected>Fair</option>
+                <option>Windy</option>
+                <option>Rough</option>
+              </select>
+            </div>
+        </div>
+  
+  
+
+          <div class="form-row">
+          <input class = "btn btn-primary btn-lg btn-block" type="submit" value="Add Observation"/>
+          </div></div></div>
+        </form>
+</div>
+
+</div>
+</div>
+<br />
+{% endif %}
+
 <div class="container">
-    <table class="table" id='table'> 
+    <table class="table table-responsive-sm" id='table'> 
       {% if not user.is_authenticated %}
       <caption><a href="{% url 'login' %}">Sign in to add reports</a></caption>
       {% endif %}
       <thead>
         <tr>
-          <th scope="col">Date</th>
-          <th scope="col">Visibility (m)</th>
+          <th scope="col">Date/Time</th>
+          <th class = "d-none d-lg-table-cell" scope="col">Visibility (m)</th>
+          <th class = "d-lg-none" scope="col">Vis (m)</th>
           <th scope="col">Conditions</th>
           <th scope="col">Comment</th>
-          <th scope="col">Reported by</th>
+          <th class = "d-none d-lg-table-cell" scope="col">Reported by</th>
+          <th class = "d-lg-none" scope="col">Reporter</th>
         </tr>
       </thead>
       <tbody>
@@ -68,33 +129,32 @@ $(document).ready(function() {
         {% if user.is_authenticated %}
         <form class="form-horizontal" method="POST" action = "{% url 'detail' Sites.site_code%}">
             {% csrf_token %}
-            <tr>
+            <tr class = "d-none d-lg-table-row">
                 <td>
-                    
                     <div class="container">
                         <div class="row">
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control datetimepicker-input" id="datetimepicker" data-toggle="datetimepicker" data-target="#datetimepicker" name="when_observed" required/>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control datetimepicker-input" id="datetimepicker2" data-toggle="datetimepicker" data-target="#datetimepicker2" name="when_observed" placeholder="YYYY-MM-DD HH:mm" required/>
                             </div>
                             <script type="text/javascript">
-                                $('#datetimepicker').datetimepicker({ format: "YYYY-MM-DD HH:mm"})
+                                $('#datetimepicker2').datetimepicker({ format: "YYYY-MM-DD HH:mm"})
                             </script>
                         </div>
                     </div>
 
                 
                 </td>
-                <td><div class="col-xs-1"></div><input class = "form-control" type="number" name="visibility" min="0" max="25" required><div class="col-xs-2"></div></td>
-                <td><div class="col-xs-1"><select class="form-control" name="conditions" required>
+                <td><div class="col-sm-12"></div><input class = "form-control" type="number" name="visibility" min="0" max="25" placeholder="0-25" required></td>
+                <td><div class="col-sm-12"><select class="form-control" name="conditions" required>
                     <option>Glassy</option>
                     <option selected>Fair</option>
                     <option>Windy</option>
                     <option>Rough</option>
                   </select></div></td>
-                <td><div class="col-xs-1"><input class = "form-control" type="text" name="comments" maxlength="30" placeholder="Optional"></div></td>
-                <td><div class="col-xs-1"><input class = "btn btn-primary" type="submit" value="Add"/></div></td>
+                <td><div class="col-sm-12"><input class = "form-control" type="text" name="comments" maxlength="30" placeholder="Optional"></div></td>
+                <td><div class="col-sm-12"><input class = "btn btn-primary" type="submit" value="Add"/></div></td>
             </tr>
-        <form>
+        </form>
         {% endif %}
   
       {%for Observation in Observations%}
@@ -128,6 +188,5 @@ $(document).ready(function() {
         {%endfor%}
       </tbody>
     </table>
-  </div>
-</form>
+</div>
 {% endblock %}

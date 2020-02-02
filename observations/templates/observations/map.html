@@ -99,7 +99,7 @@
             closeOnClick: true,
             direction: 'top',
         })
-        .setContent("<a style='color:white' href=" + feature.properties.pk.toString() + "> <h4> <i>" + feature.properties.site_name.toString() + "</h4></i></a> <u> <font color="+ getColor(vis_site['obs1']['Vis']) + ">" + vis_site['obs1']['Date'] + "</u> <br />Visibility: " + vis_site['obs1']['Vis'] + "m <br /> <u> <font color="+ getColor(vis_site['obs2']['Vis']) + ">" + vis_site['obs2']['Date'] + "</u> <br />Visibility: " + vis_site['obs2']['Vis'] + "m <br /> <u <font color="+ getColor(vis_site['obs3']['Vis']) + ">" + vis_site['obs3']['Date'] + "</u> <br />Visibility: " + vis_site['obs3']['Vis'] + "m <br /> <u>")
+        .setContent("<a style='color:white;' href=" + feature.properties.pk.toString() + "> <h4> <i>" + feature.properties.site_name.toString() + "</h4></i><a> <a style='text-decoration: none;' href=" + feature.properties.pk.toString() + "> <u> <font color="+ getColor(vis_site['obs1']['Vis']) + ">" + vis_site['obs1']['Date'] + "</u> <br />Visibility: " + vis_site['obs1']['Vis'] + "m <br /> <u> <font color="+ getColor(vis_site['obs2']['Vis']) + ">" + vis_site['obs2']['Date'] + "</u> <br />Visibility: " + vis_site['obs2']['Vis'] + "m <br /> <u <font color="+ getColor(vis_site['obs3']['Vis']) + ">" + vis_site['obs3']['Date'] + "</u> <br />Visibility: " + vis_site['obs3']['Vis'] + "m <br /> <u></a>")
         .setLatLng(layer.getLatLng());
         layer.bindPopup(text);
     
