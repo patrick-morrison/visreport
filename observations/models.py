@@ -24,7 +24,7 @@ class Site(models.Model):
                 try:
                     return {"obs1": {"Date":str(site[0].when_observed)[:16],"Vis":site[0].visibility}, "obs2": {"Date":"No data","Vis":"No data"}, "obs3": {"Date":"No data","Vis":"No data"}}
                 except IndexError:
-                    return "No observations"
+                    return {"obs1": {"Date":"No data","Vis":"No data"}, "obs2": {"Date":"No data","Vis":"No data"}, "obs3": {"Date":"No data","Vis":"No data"}}
                 
 class Observation(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
