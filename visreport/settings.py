@@ -142,11 +142,12 @@ MEDIA_URL = '/media/'
 
 LEAFLET_CONFIG = {
   'TILES': 'https://api.mapbox.com/styles/v1/patrickmorrison1498/ck603l62s0mbi1io55kc8hif5/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicGF0cmlja21vcnJpc29uMTQ5OCIsImEiOiJjazNoNDQ4dG4wMmppM21ya3BtbWc5am9iIn0.nLex7QBehGELoOf7j9OqHg',
-  'SPATIAL_EXTENT': (115.1,-33,116.3,-31),
+  'SPATIAL_EXTENT': (124,-35.5 ,113.3,-30),
   'DEFAULT_CENTER': (-32.00,115.70),
   'DEFAULT_ZOOM': 10,
   'MIN_ZOOM': 9,
   'MAX_ZOOM': 12,
+  'RESET_VIEW': False,
 }
 
 try:
