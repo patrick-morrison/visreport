@@ -32,9 +32,7 @@
             background:#292b2c;
             color: white;
             font-size:1.3em;
-            line-height:80px;
             border-right:15px solid transparent;
-            box-shadow: none !important;
         }
 }
 
@@ -125,12 +123,12 @@ stateChangingButton.addTo( map );
         label.addTo(map);
         
         var text = L.popup({
-            maxWidth: 200,
+            maxWidth: 230,
             className: 'text',
             closeOnClick: true,
             direction: 'top',
         })
-        .setContent("<a style='color:white;' href=" + feature.properties.pk.toString() + "> <h4> <i>" + feature.properties.site_name.toString() + "</h4></i><a> <a style='text-decoration: none;' href=" + feature.properties.pk.toString() + "> <u> <font color="+ getColor(vis_site['obs1']['Vis']) + ">" + vis_site['obs1']['Date'] + "</u> <br />Visibility: " + vis_site['obs1']['Vis'] + "m <br /> <u> <font color="+ getColor(vis_site['obs2']['Vis']) + ">" + vis_site['obs2']['Date'] + "</u> <br />Visibility: " + vis_site['obs2']['Vis'] + "m <br /> <u <font color="+ getColor(vis_site['obs3']['Vis']) + ">" + vis_site['obs3']['Date'] + "</u> <br />Visibility: " + vis_site['obs3']['Vis'] + "m <br /> <u></a>")
+        .setContent("<a style='color:white;' href=" + feature.properties.pk.toString() + "> <h3> <i>" + feature.properties.site_name.toString() + "</h3></i><a> <a style='line-height: 1.2; text-decoration: none;' href=" + feature.properties.pk.toString() + "><p> <u> <font color="+ getColor(vis_site['obs1']['Vis']) + ">" + vis_site['obs1']['Date'] + "</u> <br />" + vis_site['obs1']['Vis'] + "m reported by @" + vis_site['obs1']['User'] + "</p> <p><u> <font color="+ getColor(vis_site['obs2']['Vis']) + ">" + vis_site['obs2']['Date'] + "</u> <br />" + vis_site['obs2']['Vis'] + "m reported by @" + vis_site['obs2']['User'] + "</p><p> <u> <font color="+ getColor(vis_site['obs3']['Vis']) + ">" + vis_site['obs3']['Date'] + "</u> <br />" + vis_site['obs3']['Vis'] + "m reported by @" + vis_site['obs3']['User'] + "</p></a>")
         .setLatLng(layer.getLatLng());
         layer.bindPopup(text);
     
