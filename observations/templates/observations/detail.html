@@ -11,7 +11,7 @@
 <head>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
+
 </head>
 
 <script>
@@ -255,15 +255,14 @@ $(document).ready(function() {
           <th scope="row">{{Observation.when_observed}}
 
             {%if Observation.user.username == request.user.username%}
+            <a href="javascript:{document.getElementById('delete-{{Observation.pk}}').submit()}" style ="color:#d9534f">  <span class="oi oi-trash"></span></a>
 
             <form id="delete-{{Observation.pk}}" method="POST" action="{% url 'delete' Observation.pk%}">
                 {%csrf_token%}
                 <input type="hidden">
                 </form>
-
-            <a href="javascript:{document.getElementById('delete-{{Observation.pk}}').submit()}"><span class="oi oi-trash"></span></th></a>
             
-                {%endif%} 
+                {%endif%} </th>
           <td >{{Observation.visibility}}</td >
           <td>{{Observation.conditions}}</td>
           <td>{{Observation.comments}}</td>
