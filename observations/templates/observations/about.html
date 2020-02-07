@@ -6,14 +6,22 @@
     <br />
     <h1 class="display-4">About Vis.Report</h1>
     <hr />
+
+    <p class="lead text-muted"> 
+      I would like the acknowledge the Whudjuk Noongar people, who's boodja (country) this site was built on. I would also like acknowledge the Noongar peoples whose seas this site monitors: the Whudjuk, Amangu, Yuat, Pinjarup, Wardandi, Bibbulman and Minang. The Noongar peoples have ongoing connections to the sea: a connection which begun at a time when sea levels were over 80 metres lower than present, and all the sites listed here were dry land. I pay my respect to Elders past, present and emerging, and encourage all divers to reflect on the signficance of this beautiful sea country.   
+      
+    </p>
+
     <p class="lead text-muted">
-      Vis.Report contains a database of visibility and condition reports for dive sites around Perth, all contributed by users.
-      Dive sites are curated by myself. If you have a suggestion for a site that isn't on here, please email <a href = "mailto:secretary@maawa.net">secretary@maawa.net</a>.
-      Please share it around, the more people that contribute frequently, the more useful the information becomes!
+      Vis.Report contains a database of visibility and condition reports for dive sites around Perth, all contributed by users. Clicking any site on the map will display the last three reports. Clicking on those will show a list of all reports for that site, and allow you to contribute your own (if you are signed in). Please share it around, the more people that contribute frequently, the more useful the information becomes!
+      Dive sites are curated by me. If you have a suggestion for a site that isn't on here, please email <a href = "mailto:vis.report@gmail.com">vis.report@gmail.com</a>.
+      
 
       <p class="lead text-muted">
-        The data contributed is made freely available for research. The factors affecting dive conditions and visibility are not yet fully understood, particularly in the Swan River.
-        This sort of information from citizen scientists will give us greater insight, and make for better diving.
+        The factors affecting dive conditions and visibility are not yet fully understood, particularly in the Swan River. I intend to use this data to better understand long-term visbility trends. Any publication of the data will acknowledge that it was contributed by citizen scientists via this platform.
+      </p>
+      <p class="lead text-muted">
+        All data contributed is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>. This means it is open for research or any other derivitive work, as long as it properly attributed and that work also shared with the same conditions.  
         JSON files for the <a href = "{% url 'sites' %}">sites <span class="oi oi-data-transfer-download"></span></a> and <a href = "{% url 'reports-json' %}">reports <span class="oi oi-data-transfer-download"></span></a> are dynamically generated straight from the database.
         These contain exactly the same information as is visible on the site, except username is replaced with a unique number.
       </p>
@@ -22,8 +30,15 @@
       This site is built on the Django webframework, connected to a PostgeSQL database with a PostGIS extension. All passwords are stored as a secure hash using Django's authentication system.
       All code can be found on the <a href = "https://github.com/PatrickMorrison1498/visreport">Github page</a>.
     </p>
-  </div>
 
+
+  <p class="lead text-muted">
+    Safe diving!
+  </p>
+  <p class="lead text-muted">
+    Patrick Morrison
+  </p>
+</div>
 </div>
 
 {% endblock %}
