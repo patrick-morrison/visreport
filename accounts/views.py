@@ -82,6 +82,9 @@ def logout(request):
 
         
 def profile(request):
+    if request.method == 'POST':
+        return redirect('account')
+    else:
         user = request.user
         observations = Observation.objects.all().filter(user=user).order_by('-when_observed')
         return render(request, 'accounts/profile.html', {"Observations":observations})
