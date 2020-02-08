@@ -47,13 +47,13 @@ $(document).ready(function() {
     <h1 class="display-4">Welcome @{{request.user.username}}
     <hr />
     <p class="lead text-muted">
-        {% if Observations.count > 1%} You have made {{Observations.count}} reports since you joined us on {{request.user.date_joined|date:' l jS F, Y' }}. Thank you. {%else%} We look forward to your first report! {%endif%}
+        {% if Observations.count > 0%} You have made {{Observations.count}} reports since you joined us on {{request.user.date_joined|date:' l jS F, Y' }}. Thank you. {%else%} We look forward to your first report! {%endif%}
     </p>
-    <p class="lead text-muted">You can edit your account details here.</p>
+    <p class="lead text-muted" hidden >You can edit your account details here.</p>
   </div>
 </div>
 
-<div class="container" id = "profile settings">
+<div class="container" id = "profile settings" hidden>
 
     <div class="btn-group">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="new-usernameMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -64,7 +64,7 @@ $(document).ready(function() {
                 <div class="input-group mb-3"><div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">@</span>
                   </div>
-                <input type="text" class="px-1 py-2 form-control" id="new-username" placeholder="{{request.user.username}}"></div>
+                <input type="text" class="px-1 py-2 form-control" style="width: 12em;" id="new-username" placeholder="{{request.user.username}}" minlength=3 maxlength=12 size="12" required></div>
                 <input class = "btn btn-primary btn-md btn-block" type="submit" value="Update"/></form>
                 </div>
         </div>
@@ -75,7 +75,7 @@ $(document).ready(function() {
             <div class="dropdown-menu px-1 py-2">
                 <form class="">
                     <small id="new-email" class="form-text text-muted">new email</small>
-                    <input type="email" class="px-1 py-2 form-control" id="new-email" placeholder="{{request.user.email}}">
+                    <span><input type="email" style="width: 16em;" class="px-1 py-2 form-control" id="new-email" required placeholder="{{request.user.email}}">
                     <input class = "btn btn-primary btn-md btn-block" type="submit" value="Update"/></form>
                     </div>
             </div>
@@ -83,10 +83,6 @@ $(document).ready(function() {
             <div class="btn-group">
                 <button class="btn btn-secondary" type="button" id="passwordreset">Reset Password</button>
                 </div>
-
-
-    
-
 
 </div>
 
