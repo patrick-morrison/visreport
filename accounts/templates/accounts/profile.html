@@ -1,6 +1,6 @@
-{% extends 'templates/base.html' %}
+{% extends 'base.html' %}
 
-{%block content%}
+{% block content %}
 
 {%if error%}
 <br/>
@@ -8,6 +8,134 @@
 <br/>
 {%endif%}
 
-Profile of user
+{% if user.is_authenticated %}
 
-{%endblock%} 
+<head>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+</head>
+
+<script>
+$(document).ready(function() {
+    var $window = $(window);
+
+        // Function to handle changes to style classes based on window width
+        function checkWidth() {
+        if ($window.width() < 992) {
+            $('#table').addClass('table-sm');
+            $('#mobile-add-report').show();
+            };
+
+        if ($window.width() >= 992) {
+            $('#table').removeClass('table-sm');
+            $('#mobile-add-report').hide();
+        }
+    }
+    // Execute on load
+    checkWidth();
+
+
+    // Bind event listener
+        $(window).resize(checkWidth);
+});
+
+</script>
+
+<div class="container">
+    <br />
+    <h1 class="display-4">Welcome @{{request.user.username}}
+    <hr />
+    <p class="lead text-muted">
+        {% if Observations.count > 1%} You have made {{Observations.count}} reports since you joined us on {{request.user.date_joined|date:' l jS F, Y' }}. Thank you. {%else%} We look forward to your first report! {%endif%}
+    </p>
+    <p class="lead text-muted">You can edit your account details here.</p>
+  </div>
+</div>
+
+<div class="container" id = "profile settings">
+
+    <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="new-usernameMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @{{request.user.username}}</button>
+        <div class="dropdown-menu px-1 py-2">
+            <form class="">
+                <small id="new-username" class="form-text text-muted">new username</small>
+                <div class="input-group mb-3"><div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">@</span>
+                  </div>
+                <input type="text" class="px-1 py-2 form-control" id="new-username" placeholder="{{request.user.username}}"></div>
+                <input class = "btn btn-primary btn-md btn-block" type="submit" value="Update"/></form>
+                </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="new-emailButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{request.user.email}}</button>
+            <div class="dropdown-menu px-1 py-2">
+                <form class="">
+                    <small id="new-email" class="form-text text-muted">new email</small>
+                    <input type="email" class="px-1 py-2 form-control" id="new-email" placeholder="{{request.user.email}}">
+                    <input class = "btn btn-primary btn-md btn-block" type="submit" value="Update"/></form>
+                    </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" type="button" id="passwordreset">Reset Password</button>
+                </div>
+
+
+    
+
+
+</div>
+
+
+{% if Observations.count > 1%}
+<div class="container">
+    <table class="table table-responsive-sm table-hover" id='table'> 
+      <thead>
+        <caption>All {{Observations.count}} reports</caption>
+        <tr>
+          <th scope="col">Date/Time</th>
+          <th scope="col">Site</th>
+          <th scope="col" class = "d-none d-lg-table-cell" >Visibility (m)</th>
+          <th class = "d-lg-none" scope="col">Vis (m)</th>
+          <th scope="col">Conditions</th>
+          <th scope="col">Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+  
+      {%for Observation in Observations%}
+
+          {%if Observation.visibility > 19.9%}    
+          <tr class="table-primary">
+              {%elif Observation.visibility > 9.9%}    
+          <tr class="table-success">
+              {%elif Observation.visibility > 4.9%}    
+          <tr class="table-warning">
+              {%else%}
+          <tr class="table-danger">
+              {%endif%} 
+
+        <th scope="row">{{Observation.when_observed}}</a></th>
+        <td class = "d-none d-lg-table-cell"><a style = "color:black;" href="/{{Observation.site.site_code}}">{{Observation.site.site_name}} <small><i>({{Observation.site.site_code}})</i></small></a></td>
+        <td class = "d-lg-none"><a style = "color:black;" href="/{{Observation.site.site_code}}"><b>{{Observation.site.site_code}}</b></a></td>
+        <td>{{Observation.visibility}}</td>
+        <td>{{Observation.conditions}}</td>
+        <td>{{Observation.comments}}</td>
+
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+</div>
+{%endif%}
+{% endif %}
+{% endblock %}
+
+
+    
+    
+    
