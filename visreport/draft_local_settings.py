@@ -14,3 +14,9 @@ DATABASES = {
         'PORT': 5432,
     }
 }
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='vis.report.app@gmail.com'
+EMAIL_HOST_PASSWORD='@6wt*cEkoco'
+EMAIL_USE_TLS=True
+EMAIL_PORT='587'
