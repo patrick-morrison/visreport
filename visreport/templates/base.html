@@ -1,127 +1,144 @@
 <!doctype html>
 <html lang="en" class="h-100">
-  <head>
-    {% load static %}
-    <meta charset="utf-8">
-    <!-- <meta property="og:image" content="{%static 'visreportpreview.png'%}" /> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Vis.Report contains a databse of visibility and conditions reports for dive sites around Perth, all contributed by users.">
-    <meta name="author" content="Patrick">
-    <title>Vis.Report</title>
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="{%static 'open-iconic/font/css/open-iconic-bootstrap.css'%}">
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta property="og:image" content="{%static 'visreportpreview.png'%}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description"
+    content="Vis.Report contains a databse of visibility and conditions reports for dive sites around Perth, all contributed by users.">
+  <meta name="author" content="Patrick">
+  <title>Vis.Report</title>
 
-    <!-- Favicons -->
-    <meta name="theme-color" content="#563d7c">
-    <script src="https://kit.fontawesome.com/954540c6d4.js" crossorigin="anonymous"></script>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="{%static 'open-iconic/font/css/open-iconic-bootstrap.css'%}">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157533395-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-157533395-1');
-      </script>
+  <!-- Favicons -->
+  <meta name="theme-color" content="#563d7c">
+  <script src="https://kit.fontawesome.com/954540c6d4.js" crossorigin="anonymous"></script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157533395-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-157533395-1');
+  </script>
 
 
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
       }
+    }
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
+    caption {
+      caption-side: top;
+      text-align: right;
+    }
+  </style>
+</head>
 
-      caption { caption-side:top; text-align: right;}
-      
-    </style>
-  </head>
-  <body class="d-flex flex-column h-100">
-    <header>
-  <!-- Fixed navbar -->
+<body class="d-flex flex-column h-100">
+  <header>
+    <!-- Fixed navbar -->
 
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #667292;">
-    <div class="container">
-    <a class="navbar-brand" href="{%url 'map' %}">Vis.Report</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarToggler">
-        <ul class="nav navbar-nav ml-auto">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #667292;">
+      <div class="container">
+        <a class="navbar-brand" href="{%url 'map' %}">Vis.Report</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+          aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+          <ul class="nav navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link mr-3" href="{%url 'about'%}">About</a>
-              </li>    
-          {% if user.is_authenticated %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Logged in as {{request.user.username}} 
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="{%url 'profile' %}">Account</a>
-            {% if user.is_staff %}
-            <a class="dropdown-item" href="/admin/">Django Admin</a>
-            {% endif %}
-            <a class="dropdown-item" href="javascript:{document.getElementById('logout').submit()}">Logout</a>
-            </div>
-            <form id="logout" method="POST" action="{%url 'logout' %}">
+              <a class="nav-link mr-3" href="{%url 'about'%}">About</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Logged in as {{request.user.username}}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="{%url 'profile' %}">Account</a>
+                {% if user.is_staff %}
+                <a class="dropdown-item" href="/admin/">Django Admin</a>
+                {% endif %}
+                <a class="dropdown-item" href="javascript:{document.getElementById('logout').submit()}">Logout</a>
+              </div>
+              <form id="logout" method="POST" action="{%url 'logout' %}">
                 {%csrf_token%}
                 <input type="hidden">
               </form>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link mr-4" href="{%url 'signup'%}">Sign Up</a>
-          </li>       
-          <li class="nav-item">
-            <form class="form-inline" method="POST" action = "{% url 'login' %}">
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link mr-4" href="{%url 'signup'%}">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <form class="form-inline" method="POST" action="{% url 'login' %}">
                 {%csrf_token%}
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">@</span>
-                      </div>
-                  <input type="text" class="form-control mr-1" placeholder="Username" aria-label="Username" aria-describedby="username" name = "username">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">@</span>
+                  </div>
+                  <input type="text" class="form-control mr-1" placeholder="Username" aria-label="Username"
+                    aria-describedby="username" name="username">
                 </div>
-                <input type="password" class="form-control mr-1" placeholder="Password" aria-label="Password" aria-describedby="password" name = "password">
+                <input type="password" class="form-control mr-1" placeholder="Password" aria-label="Password"
+                  aria-describedby="password" name="password">
                 <button class="btn btn btn-light my-sm-0" type="submit">Sign in</button>
               </form>
-          {% endif %}
-        </ul>
+              {% endif %}
+          </ul>
+        </div>
       </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Begin page content -->
+  <main role="main" class="flex-shrink-0">
+    <div class="container">
+
     </div>
-    </div>
-  </nav>
-</header>
-
-<!-- Begin page content -->
-<main role="main" class="flex-shrink-0">
-  <div class="container">
-  
-  </div>
-</main>
+  </main>
 
 
-{% block content %}
-{% endblock %}
+  {% block content %}
+  {% endblock %}
 
-<footer class="footer mt-auto py-1">
+  <footer class="footer mt-auto py-1">
     <div class="container">
       <span class="text-muted p-1 pl-sm-5">Designed in 2020 by Patrick Morrison.</a></span>
     </div>
   </footer>
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </html>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+</html>

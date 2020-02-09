@@ -14,132 +14,134 @@
 
     <!-- style tag and django-leaflet tag here -->
     <style media="screen">
-        #map { width:100%; height:100% }
-        .leaflet-tooltip-pane .label {
-        color: white; 
-        font-weight: bolder;
-        font-style: italic;
-        background: transparent;
-        border:0;
-        box-shadow: none;
-        font-size:1.1em
-        font-family: "Arial Narrow", sans-serif;
-      </style>
+        #map {
+            width: 100%;
+            height: 100%
+        }
 
-      <style>
+        .leaflet-tooltip-pane .label {
+            color: white;
+            font-weight: bolder;
+            font-style: italic;
+            background: transparent;
+            border: 0;
+            box-shadow: none;
+            font-size: 1.1em font-family: "Arial Narrow", sans-serif;
+    </style>
+
+    <style>
         .leaflet-popup-tip,
         .leaflet-popup-content-wrapper {
-            background:#292b2c;
+            background: #292b2c;
             color: white;
-            font-size:1.3em;
-            border-right:15px solid transparent;
+            font-size: 1.3em;
+            border-right: 15px solid transparent;
         }
-}
-
-      </style>
+        }
+    </style>
 
     <script src="{% static 'bower_components/leaflet-ajax/dist/leaflet.ajax.min.js' %}"></script>
     <script src="{% static 'bower_components/spin.js/spin.min.js' %}"></script>
     <script src="{% static 'bower_components/leaflet-spin/leaflet.spin.js' %}"></script>
 
 </head>
+
 <body>
 
     <script type="text/javascript">
 
-    var vis = {}
+        var vis = {}
 
-    {%for site in sites.all%}
+        {%for site in sites.all %}
         site_vis_json = '{{site.current_vis}}'.replace(/&#x27;/g, '"');
         console.log(site_vis_json)
         site_vis = JSON.parse(site_vis_json);
         vis["{{site.site_code}}"] = site_vis;
-    {%endfor%}
-    
+        {% endfor %}
 
-    function geojsonMarkerOptions(feature) {
-        return {
-        radius: 16,
-        fillColor: getColor(vis[feature.properties.pk.toString()]['obs1']['Vis']),
-        color: "#000",
-        weight: 0,
-        opacity: 1,
-        fillOpacity: 1,
-    };
-    }
 
-    function getColor(v) {
-    return v > 19.9 ? '#0275d8' :
-           v > 9.9  ? '#5cb85c' :
-           v > 4.9  ? '#f0ad4e' :
-           v > 0.1  ? '#d9534f' :
-                     '#868e96'  ;
-    }
+        function geojsonMarkerOptions(feature) {
+            return {
+                radius: 16,
+                fillColor: getColor(vis[feature.properties.pk.toString()]['obs1']['Vis']),
+                color: "#000",
+                weight: 0,
+                opacity: 1,
+                fillOpacity: 1,
+            };
+        }
 
-        function map_init_basic (map, options) {
+        function getColor(v) {
+            return v > 19.9 ? '#0275d8' :
+                v > 9.9 ? '#5cb85c' :
+                    v > 4.9 ? '#f0ad4e' :
+                        v > 0.1 ? '#d9534f' :
+                            '#868e96';
+        }
+
+        function map_init_basic(map, options) {
             var stateChangingButton = L.easyButton({
-    states: [{
-            stateName: 'zoom-to-southwest',        // name the state
-            icon:      '<strong>SW</strong>',               // and define its properties
-            title:     'Zoom to Southwest',      // like its title
-            onClick: function(btn, map) {       // and its callback
-                map.setView([-33.8,115.33],8, {
-                  animate: true,
-                  duration: 1.5
-                });
-                btn.state('zoom-to-perth');    // change state on click!
-            }
-        }, {
-            stateName: 'zoom-to-perth',
-            icon:      'fa-home',
-            title:     'Zoom to a Perth',
-            onClick: function(btn, map) {
-                map.setView([-32.00,115.70],10, {
-                  animate: true,
-                  duration: 1.5
-                });
-                btn.state('zoom-to-southwest');
-                }
-             }]
-          });
+                states: [{
+                    stateName: 'zoom-to-southwest',        // name the state
+                    icon: '<strong>SW</strong>',               // and define its properties
+                    title: 'Zoom to Southwest',      // like its title
+                    onClick: function (btn, map) {       // and its callback
+                        map.setView([-33.8, 115.33], 8, {
+                            animate: true,
+                            duration: 1.5
+                        });
+                        btn.state('zoom-to-perth');    // change state on click!
+                    }
+                }, {
+                    stateName: 'zoom-to-perth',
+                    icon: 'fa-home',
+                    title: 'Zoom to a Perth',
+                    onClick: function (btn, map) {
+                        map.setView([-32.00, 115.70], 10, {
+                            animate: true,
+                            duration: 1.5
+                        });
+                        btn.state('zoom-to-southwest');
+                    }
+                }]
+            });
 
-stateChangingButton.addTo( map );
+            stateChangingButton.addTo(map);
 
             var geojsonSiteLayer = new L.GeoJSON.AJAX("{% url 'sites' %}", {
-            pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, geojsonMarkerOptions(feature));
-         },
-    onEachFeature: function(feature, layer) {
-        var vis_site = vis[feature.properties.pk.toString()]
-        var current_vis = vis_site['obs1']['Vis']
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, geojsonMarkerOptions(feature));
+                },
+                onEachFeature: function (feature, layer) {
+                    var vis_site = vis[feature.properties.pk.toString()]
+                    var current_vis = vis_site['obs1']['Vis']
 
-        var label = L.tooltip({
-            permanent: true,
-            direction: 'center',
-            className: 'label'
-        })
-        .setContent(feature.properties.pk.toString())
-        .setLatLng(layer.getLatLng());
-        label.addTo(map);
-        
-        var text = L.popup({
-            maxWidth: 230,
-            className: 'text',
-            closeOnClick: true,
-            direction: 'top',
-        })
-        .setContent("<a style='color:white;' href=" + feature.properties.pk.toString() + "> <h3><i>" + feature.properties.site_name.toString() + "</h3></i><a> <a style='line-height: 1.2; text-decoration: none;' href=" + feature.properties.pk.toString() + "><font color="+ getColor(vis_site['obs1']['Vis']) + "><p><u>" + vis_site['obs1']['Date'] + "</u> <br />" + vis_site['obs1']['Vis'] + "m reported by @" + vis_site['obs1']['User'] + "</p><font color="+ getColor(vis_site['obs2']['Vis']) + "><p><u>" + vis_site['obs2']['Date'] + "</u> <br />" + vis_site['obs2']['Vis'] + "m reported by @" + vis_site['obs2']['User'] + "</p><font color="+ getColor(vis_site['obs3']['Vis']) + "><p><u>" + vis_site['obs3']['Date'] + "</u> <br />" + vis_site['obs3']['Vis'] + "m reported by @" + vis_site['obs3']['User'] + "</p><font color='#777d80'><small>Click here to view more or add report.</small></a>")
-        .setLatLng(layer.getLatLng());
-        layer.bindPopup(text);
-    
-    }
-}).addTo(map);
-          }
-     </script>
-     
+                    var label = L.tooltip({
+                        permanent: true,
+                        direction: 'center',
+                        className: 'label'
+                    })
+                        .setContent(feature.properties.pk.toString())
+                        .setLatLng(layer.getLatLng());
+                    label.addTo(map);
+
+                    var text = L.popup({
+                        maxWidth: 230,
+                        className: 'text',
+                        closeOnClick: true,
+                        direction: 'top',
+                    })
+                        .setContent("<a style='color:white;' href=" + feature.properties.pk.toString() + "> <h3><i>" + feature.properties.site_name.toString() + "</h3></i><a> <a style='line-height: 1.2; text-decoration: none;' href=" + feature.properties.pk.toString() + "><font color=" + getColor(vis_site['obs1']['Vis']) + "><p><u>" + vis_site['obs1']['Date'] + "</u> <br />" + vis_site['obs1']['Vis'] + "m reported by @" + vis_site['obs1']['User'] + "</p><font color=" + getColor(vis_site['obs2']['Vis']) + "><p><u>" + vis_site['obs2']['Date'] + "</u> <br />" + vis_site['obs2']['Vis'] + "m reported by @" + vis_site['obs2']['User'] + "</p><font color=" + getColor(vis_site['obs3']['Vis']) + "><p><u>" + vis_site['obs3']['Date'] + "</u> <br />" + vis_site['obs3']['Vis'] + "m reported by @" + vis_site['obs3']['User'] + "</p><font color='#777d80'><small>Click here to view more or add report.</small></a>")
+                        .setLatLng(layer.getLatLng());
+                    layer.bindPopup(text);
+
+                }
+            }).addTo(map);
+        }
+    </script>
+
     {% leaflet_map "map" callback="window.map_init_basic" %}
 </body>
 
 
 {% endblock %}
-

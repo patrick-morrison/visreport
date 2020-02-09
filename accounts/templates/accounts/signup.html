@@ -2,36 +2,39 @@
 
 {%block content%}
 <div class="container">
-<br/>
-<div class="card border-light mb-3 mx-auto" style="max-width: 23rem;">
-<body class="text-center">
-    <form class="form-signin" method="POST" action = "{% url 'signup' %}">
+  <br />
+  <div class="card border-light mb-3 mx-auto" style="max-width: 23rem;">
+
+    <body class="text-center">
+      <form class="form-signin" method="POST" action="{% url 'signup' %}">
         {% csrf_token %}
         <div class="card-header">
-            Sign Up to Contribute
-          </div>
+          Sign Up to Contribute
+        </div>
         <p class="card-text">With a user account you can add visibility reports.</p>
-        <p class="card-text">By signing up you agree that data you contribute is <a href="{%url 'about'%}">made freely available for research.</a></p>   
+        <p class="card-text">By signing up you agree that data you contribute is <a href="{%url 'about'%}">made freely
+            available for research.</a></p>
         {%if error%}
         <div class="card-body text-danger">
           <p class="card-text">{{error}}</p>
         </div>
         {%endif%}
-      <label for="username" class="sr-only">Username</label>
-      <input type="text" id="username" class="form-control" placeholder="Username" required autofocus name = "username">
-      <p class="card-text text-muted">Will be displayed publicly on your reports.</p>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required name = "email">
-      <p class="card-text text-muted">Your email address will be used to verify your account.</p>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required name = "password1">
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" id="username" class="form-control" placeholder="Username" required autofocus name="username">
+        <p class="card-text text-muted">Will be displayed publicly on your reports.</p>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required name="email">
+        <p class="card-text text-muted">Your email address will be used to verify your account.</p>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required name="password1">
 
-      <label for="confirmPassword" class="sr-only">Confirm Password</label>
-      <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required name = "password2">
-      <br />
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
-    </div>
-    </form>
+        <label for="confirmPassword" class="sr-only">Confirm Password</label>
+        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required
+          name="password2">
+        <br />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+  </div>
+  </form>
   </body>
 </div>
 </div>
