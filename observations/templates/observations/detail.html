@@ -3,48 +3,48 @@
 {% block content %}
 
 {%if error%}
-<br/>
+<br />
 {{error}}
-<br/>
+<br />
 {%endif%}
 
 <head>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </head>
 
 <script>
-$(document).ready(function() {
+  $(document).ready(function () {
     var $window = $(window);
 
-        // Function to handle changes to style classes based on window width
-        function checkWidth() {
-        if ($window.width() < 992) {
-            $('#table').addClass('table-sm');
-            $('#mobile-add-report').show();
-            };
+    // Function to handle changes to style classes based on window width
+    function checkWidth() {
+      if ($window.width() < 992) {
+        $('#table').addClass('table-sm');
+        $('#mobile-add-report').show();
+      };
 
-        if ($window.width() >= 992) {
-            $('#table').removeClass('table-sm');
-            $('#mobile-add-report').hide();
-        }
+      if ($window.width() >= 992) {
+        $('#table').removeClass('table-sm');
+        $('#mobile-add-report').hide();
+      }
     }
-          function setDates() {
-            var today = new Date()
-            var yesterday = new Date(today)
-            yesterday.setDate(yesterday.getDate() - 1)
-            var today_formatted = today.toISOString().slice(0,10);
-            var yesterday_formatted = yesterday.toISOString().slice(0,10);
+    function setDates() {
+      var today = new Date()
+      var yesterday = new Date(today)
+      yesterday.setDate(yesterday.getDate() - 1)
+      var today_formatted = today.toISOString().slice(0, 10);
+      var yesterday_formatted = yesterday.toISOString().slice(0, 10);
 
-            var select = document.getElementById("day_mobile");
-            select.options[select.options.length] = new Option('Today', today_formatted);
-            select.options[select.options.length] = new Option('Yesterday', yesterday_formatted);
+      var select = document.getElementById("day_mobile");
+      select.options[select.options.length] = new Option('Today', today_formatted);
+      select.options[select.options.length] = new Option('Yesterday', yesterday_formatted);
 
-            var select = document.getElementById("day_table");
-            select.options[select.options.length] = new Option('Today', today_formatted);
-            select.options[select.options.length] = new Option('Yesterday', yesterday_formatted);
-          }
+      var select = document.getElementById("day_table");
+      select.options[select.options.length] = new Option('Today', today_formatted);
+      select.options[select.options.length] = new Option('Yesterday', yesterday_formatted);
+    }
 
 
 
@@ -54,103 +54,108 @@ $(document).ready(function() {
 
 
     // Bind event listener
-        $(window).resize(checkWidth);
-});
+    $(window).resize(checkWidth);
+  });
 
 </script>
 
 <div class="container">
-    <br />
-    <h1 class="display-4">{{Sites.site_name}} <small class="text-muted"> ({{Sites.site_code}})</small> </h1>
-    <hr />
-    <p class="lead text-muted">{{Sites.site_description}}</p>
-  </div>
+  <br />
+  <h1 class="display-4">{{Sites.site_name}} <small class="text-muted"> ({{Sites.site_code}})</small> </h1>
+  <hr />
+  <p class="lead text-muted">{{Sites.site_description}}</p>
+</div>
 </div>
 
 {% if user.is_authenticated %}
 
-<div class="container" id = "mobile-add-report">
-    <div class="card">
-        <div class="card-header">
-            <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapse-mobile-add-report" aria-expanded="true" aria-controls="collapse-mobile-add-report">
-                Contribute Report
-              </button>
+<div class="container" id="mobile-add-report">
+  <div class="card">
+    <div class="card-header">
+      <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapse-mobile-add-report"
+        aria-expanded="true" aria-controls="collapse-mobile-add-report">
+        Contribute Report
+      </button>
+    </div>
+    <div class="collapse show" id="collapse-mobile-add-report">
+      <div class="card-body">
+        <form class="form-horizontal" method="POST" action="{% url 'detail' Sites.site_code%}">
+          {% csrf_token %}
+          <div class="form-row">
+            <script>
+              function join_date_mobile() {
+                var dd = document.getElementById('day_mobile').value;
+                var hh = document.getElementById('hour_mobile').value;
+                document.getElementById('when_observed_mobile').value = dd + " " + hh + ":00";
+                //alert(document.getElementById('when_observed').value);
+              }</script>
+
+            <div class="form-group col-5">
+              <label for="day">Day</label>
+              <select class="form-control" name="day" id="day_mobile" oninput="join_date_mobile();" required>
+              </select></div>
+
+            <div class="form-group col-3">
+              <label for="day">Hour</label>
+              <select class="form-control" name="hour" id="hour_mobile" oninput="join_date_mobile();" required>
+                <option value="00">12am</option>
+                <option value="01">1am</option>
+                <option value="02">2am</option>
+                <option value="03">3am</option>
+                <option value="04">4am</option>
+                <option value="05">5am</option>
+                <option value="06">6am</option>
+                <option value="07">7am</option>
+                <option value="08">8am</option>
+                <option value="09" selected>9am</option>
+                <option value="10">10am</option>
+                <option value="11">11am</option>
+                <option value="12">12pm</option>
+                <option value="13">1pm</option>
+                <option value="14">2pm</option>
+                <option value="15">3pm</option>
+                <option value="16">4pm</option>
+                <option value="17">5pm</option>
+                <option value="18">6pm</option>
+                <option value="19">7pm</option>
+                <option value="20">8pm</option>
+                <option value="21">9pm</option>
+                <option value="22">10pm</option>
+                <option value="23">11pm</option>
+              </select></div>
+
+            <input type="hidden" name="when_observed" id="when_observed_mobile">
+
+            <div class="form-group col-4">
+              <label for="visibility">Visibility (m)</label>
+              <input class="form-control" type="number" id="visibility" name="visibility" min="0" max="25"
+                placeholder="0-25" oninput="join_date_mobile();" required>
+            </div>
           </div>
-          <div class="collapse show" id="collapse-mobile-add-report">
-        <div class="card-body">
-    <form class="form-horizontal" method="POST" action = "{% url 'detail' Sites.site_code%}">
-        {% csrf_token %}
-        <div class="form-row">
-          <script>
-          function join_date_mobile(){
-          var dd = document.getElementById('day_mobile').value;
-          var hh = document.getElementById('hour_mobile').value;
-          document.getElementById('when_observed_mobile').value = dd+" "+hh+":00";
-          //alert(document.getElementById('when_observed').value);
-          }</script>
-                
-                <div class="form-group col-5">
-                  <label for="day">Day</label>
-                <select class="form-control" name="day" id="day_mobile" oninput="join_date_mobile();" required>
-                </select></div>
-
-                <div class="form-group col-3">
-                  <label for="day">Hour</label>
-                <select class="form-control" name="hour" id="hour_mobile" oninput="join_date_mobile();" required>
-                  <option value= "00">12am</option>
-                  <option value= "01">1am</option>
-                  <option value= "02">2am</option>
-                  <option value= "03">3am</option>
-                  <option value= "04">4am</option>
-                  <option value= "05">5am</option>
-                  <option value= "06">6am</option>
-                  <option value= "07">7am</option>
-                  <option value= "08">8am</option>
-                  <option value= "09" selected>9am</option>
-                  <option value= "10">10am</option>
-                  <option value= "11">11am</option>
-                  <option value= "12">12pm</option>
-                  <option value= "13">1pm</option>
-                  <option value= "14">2pm</option>
-                  <option value= "15">3pm</option>
-                  <option value= "16">4pm</option>
-                  <option value= "17">5pm</option>
-                  <option value= "18">6pm</option>
-                  <option value= "19">7pm</option>
-                  <option value= "20">8pm</option>
-                  <option value= "21">9pm</option>
-                  <option value= "22">10pm</option>
-                  <option value= "23">11pm</option>
-                </select></div>
-                
-              <input type="hidden" name = "when_observed" id="when_observed_mobile">
-
-            <div class="form-group col-4">
-                    <label for="visibility">Visibility (m)</label>
-                    <input class = "form-control" type="number" id="visibility" name="visibility" min="0" max="25" placeholder="0-25" oninput="join_date_mobile();" required>
-                  </div>
-                </div>
-            <div class="form-row">  
+          <div class="form-row">
             <div class="form-group col-8">
-                    <label for="comments">Comments</label>
-                    <input class = "form-control" type="text" name="comments" id="comments" maxlength="30" placeholder="Optional">
-                  </div>
+              <label for="comments">Comments</label>
+              <input class="form-control" type="text" name="comments" id="comments" maxlength="30"
+                placeholder="Optional">
+            </div>
             <div class="form-group col-4">
-            <label for="conditions">Conditions</label>
-            <select class="form-control" name="conditions" id="conditions" required>
+              <label for="conditions">Conditions</label>
+              <select class="form-control" name="conditions" id="conditions" required>
                 <option>Glassy</option>
                 <option selected>Fair</option>
                 <option>Windy</option>
                 <option>Rough</option>
               </select>
             </div>
-        </div>
+          </div>
 
           <div class="form-row">
-          <input class = "btn btn-primary btn-lg btn-block" type="submit" onclick="join_date();" value="Add Report"/>
-          </div></div></div>
-        </form>
-</div>
+            <input class="btn btn-primary btn-lg btn-block" type="submit" onclick="join_date();" value="Add Report" />
+          </div>
+      </div>
+    </div>
+    </form>
+  </div>
 
 </div>
 </div>
@@ -158,118 +163,130 @@ $(document).ready(function() {
 {% endif %}
 
 <div class="container">
-    <table class="table table-responsive-sm" id='table'> 
-      {% if not user.is_authenticated %}
-      <caption><a href="{% url 'login' %}">Sign in to add reports</a></caption>
-      {% endif %}
-      <thead>
-        <tr>
-          <th scope="col">Date/Time</th>
-          <th class = "d-none d-lg-table-cell" scope="col">Visibility (m)</th>
-          <th class = "d-lg-none" scope="col">Vis (m)</th>
-          <th scope="col">Conditions</th>
-          <th scope="col">Comment</th>
-          <th class = "d-none d-lg-table-cell" scope="col">Reported by</th>
-          <th class = "d-lg-none" scope="col">Reporter</th>
+  <table class="table table-responsive-sm" id='table'>
+    {% if not user.is_authenticated %}
+    <caption><a href="{% url 'login' %}">Sign in to add reports</a></caption>
+    {% endif %}
+    <thead>
+      <tr>
+        <th scope="col">Date/Time</th>
+        <th class="d-none d-lg-table-cell" scope="col">Visibility (m)</th>
+        <th class="d-lg-none" scope="col">Vis (m)</th>
+        <th scope="col">Conditions</th>
+        <th scope="col">Comment</th>
+        <th class="d-none d-lg-table-cell" scope="col">Reported by</th>
+        <th class="d-lg-none" scope="col">Reporter</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% if user.is_authenticated %}
+      <form class="form-horizontal" method="POST" action="{% url 'detail' Sites.site_code%}">
+        {% csrf_token %}
+
+        <tr class="d-none d-lg-table-row">
+          <td>
+            <script>
+              function join_date_table() {
+                var dd = document.getElementById('day_table').value;
+                var hh = document.getElementById('hour_table').value;
+                document.getElementById('when_observed_table').value = dd + " " + hh + ":00";
+                //alert(document.getElementById('when_observed').value);
+              }</script>
+
+            <div class="form-row">
+              <div class="form-group col-6">
+                <select class="form-control" name="day" id="day_table" oninput="join_date_table();" required>
+                </select></div>
+
+              <div class="form-group col-6">
+                <select class="form-control" name="hour" id="hour_table" oninput="join_date_table();" required>
+                  <option value="00">12am</option>
+                  <option value="01">1am</option>
+                  <option value="02">2am</option>
+                  <option value="03">3am</option>
+                  <option value="04">4am</option>
+                  <option value="05">5am</option>
+                  <option value="06">6am</option>
+                  <option value="07">7am</option>
+                  <option value="08">8am</option>
+                  <option value="09" selected>9am</option>
+                  <option value="10">10am</option>
+                  <option value="11">11am</option>
+                  <option value="12">12pm</option>
+                  <option value="13">1pm</option>
+                  <option value="14">2pm</option>
+                  <option value="15">3pm</option>
+                  <option value="16">4pm</option>
+                  <option value="17">5pm</option>
+                  <option value="18">6pm</option>
+                  <option value="19">7pm</option>
+                  <option value="20">8pm</option>
+                  <option value="21">9pm</option>
+                  <option value="22">10pm</option>
+                  <option value="23">11pm</option>
+                </select></div>
+
+              <input type="hidden" name="when_observed" id="when_observed_table">
+
+            </div>
+
+
+          </td>
+          <td>
+            <div class=""></div><input class="form-control" type="number" name="visibility" min="0" max="25"
+              placeholder="0-25" oninput="join_date_table();" required>
+          </td>
+          <td>
+            <div class="col-sm-12"><select class="form-control" name="conditions" required>
+                <option>Glassy</option>
+                <option selected>Fair</option>
+                <option>Windy</option>
+                <option>Rough</option>
+              </select></div>
+          </td>
+          <td>
+            <div class="col-sm-12"><input class="form-control" type="text" name="comments" maxlength="30"
+                placeholder="Optional"></div>
+          </td>
+          <td>
+            <div class="col-sm-12"><input class="btn btn-primary" type="submit" value="Add Report" /></div>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-      
-        {% if user.is_authenticated %}
-        <form class="form-horizontal" method="POST" action = "{% url 'detail' Sites.site_code%}">
-            {% csrf_token %}
-           
-            <tr class = "d-none d-lg-table-row">
-                <td>
-                  <script>
-                    function join_date_table(){
-                    var dd = document.getElementById('day_table').value;
-                    var hh = document.getElementById('hour_table').value;
-                    document.getElementById('when_observed_table').value = dd+" "+hh+":00";
-                    //alert(document.getElementById('when_observed').value);
-                    }</script>
+      </form>
+      {% endif %}
 
-                  <div class="form-row">
-                      <div class="form-group col-6">
-                      <select class="form-control" name="day" id="day_table" oninput="join_date_table();" required>
-                      </select></div>
-      
-                      <div class="form-group col-6">
-                      <select class="form-control" name="hour" id="hour_table" oninput="join_date_table();" required>
-                        <option value= "00">12am</option>
-                        <option value= "01">1am</option>
-                        <option value= "02">2am</option>
-                        <option value= "03">3am</option>
-                        <option value= "04">4am</option>
-                        <option value= "05">5am</option>
-                        <option value= "06">6am</option>
-                        <option value= "07">7am</option>
-                        <option value= "08">8am</option>
-                        <option value= "09" selected>9am</option>
-                        <option value= "10">10am</option>
-                        <option value= "11">11am</option>
-                        <option value= "12">12pm</option>
-                        <option value= "13">1pm</option>
-                        <option value= "14">2pm</option>
-                        <option value= "15">3pm</option>
-                        <option value= "16">4pm</option>
-                        <option value= "17">5pm</option>
-                        <option value= "18">6pm</option>
-                        <option value= "19">7pm</option>
-                        <option value= "20">8pm</option>
-                        <option value= "21">9pm</option>
-                        <option value= "22">10pm</option>
-                        <option value= "23">11pm</option>
-                      </select></div>
-                      
-                    <input type="hidden" name = "when_observed" id="when_observed_table">
-
-                    </div>
-
-                
-                </td>
-                <td><div class=""></div><input class = "form-control" type="number" name="visibility" min="0" max="25" placeholder="0-25" oninput="join_date_table();" required></td>
-                <td><div class="col-sm-12"><select class="form-control" name="conditions" required>
-                    <option>Glassy</option>
-                    <option selected>Fair</option>
-                    <option>Windy</option>
-                    <option>Rough</option>
-                  </select></div></td>
-                <td><div class="col-sm-12"><input class = "form-control" type="text" name="comments" maxlength="30" placeholder="Optional"></div></td>
-                <td><div class="col-sm-12"><input class = "btn btn-primary" type="submit" value="Add Report"/></div></td>
-            </tr>
-        </form>
-        {% endif %}
-  
       {%for Observation in Observations%}
 
-          {%if Observation.visibility > 19.9%}    
-          <tr class="table-primary">
-              {%elif Observation.visibility > 9.9%}    
-          <tr class="table-success">
-              {%elif Observation.visibility > 4.9%}    
-          <tr class="table-warning">
-              {%else%}
-          <tr class="table-danger">
-              {%endif%} 
-          <th scope="row">{{Observation.when_observed}}
+      {%if Observation.visibility > 19.9%}
+      <tr class="table-primary">
+        {%elif Observation.visibility > 9.9%}
+      <tr class="table-success">
+        {%elif Observation.visibility > 4.9%}
+      <tr class="table-warning">
+        {%else%}
+      <tr class="table-danger">
+        {%endif%}
+        <th scope="row">{{Observation.when_observed}}
 
-            {%if Observation.user.username == request.user.username%}
-            <a href="javascript:{document.getElementById('delete-{{Observation.pk}}').submit()}" style ="color:#d9534f">  <span class="oi oi-trash"></span></a>
+          {%if Observation.user.username == request.user.username%}
+          <a href="javascript:{document.getElementById('delete-{{Observation.pk}}').submit()}" style="color:#d9534f">
+            <span class="oi oi-trash"></span></a>
 
-            <form id="delete-{{Observation.pk}}" method="POST" action="{% url 'delete' Observation.pk%}">
-                {%csrf_token%}
-                <input type="hidden">
-                </form>
-            
-                {%endif%} </th>
-          <td >{{Observation.visibility}}</td >
-          <td>{{Observation.conditions}}</td>
-          <td>{{Observation.comments}}</td>
-          <td>@{{Observation.user.username}} </span></td>
-        </tr>
-        {%endfor%}
-      </tbody>
-    </table>
+          <form id="delete-{{Observation.pk}}" method="POST" action="{% url 'delete' Observation.pk%}">
+            {%csrf_token%}
+            <input type="hidden">
+          </form>
+
+          {%endif%}
+        </th>
+        <td>{{Observation.visibility}}</td>
+        <td>{{Observation.conditions}}</td>
+        <td>{{Observation.comments}}</td>
+        <td>@{{Observation.user.username}} </span></td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
