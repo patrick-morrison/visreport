@@ -7,7 +7,7 @@ ALLOWED_HOSTS = ['128.199.208.179']
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'visreportdb',
+        'NAME': 'visreportsdb',
         'USER': 'visreporter',
         'PASSWORD': 'divesites2020',
         'HOST': "localhost",
