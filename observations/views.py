@@ -17,7 +17,8 @@ def sites_view(request):
     return JsonResponse(json.loads(points_as_geojson))
 
 def reports_view(request):
-    return JsonResponse(Observation.objects.all())
+    points_as_geojson = serialize('geojson', Observation.objects.all())
+    return JsonResponse(json.loads(points_as_geojson))
 
 class MapView(generic.TemplateView):
     template_name = 'observations/map.html'
