@@ -1,3 +1,5 @@
+import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.serializers import serialize
 from .models import Site, Observation
@@ -12,11 +14,10 @@ def about(request):
 
 def sites_view(request):
     points_as_geojson = serialize('geojson', Site.objects.all())
-    return HttpResponse(points_as_geojson, content_type='json')
+    return JsonResponse(json.loads(points_as_geojson))
 
 def reports_view(request):
-    points_as_geojson = serialize('geojson', Observation.objects.all())
-    return HttpResponse(points_as_geojson, content_type='json')
+    return JsonResponse(Observation.objects.all())
 
 class MapView(generic.TemplateView):
     template_name = 'observations/map.html'
