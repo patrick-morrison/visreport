@@ -15,12 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8(p!jvgvzare(g(1=wdr(wmpklx&2_wgndw&128^-p)@%k43jm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -59,8 +55,16 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ["visreport","visreport/templates","visreport/accounts","visreport/accounts/templates/accounts", "observations/templates"],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
+
+            'loaders': [
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
+            ],
+
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
