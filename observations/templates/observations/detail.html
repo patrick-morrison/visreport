@@ -258,11 +258,11 @@
 
       {%for Observation in Observations%}
 
-      {%if Observation.visibility > 19.9%}
+      {%if Observation.visibility > 15.9%}
       <tr class="table-primary">
-        {%elif Observation.visibility > 9.9%}
+        {%elif Observation.visibility > 7.9%}
       <tr class="table-success">
-        {%elif Observation.visibility > 4.9%}
+        {%elif Observation.visibility > 2.9%}
       <tr class="table-warning">
         {%else%}
       <tr class="table-danger">
