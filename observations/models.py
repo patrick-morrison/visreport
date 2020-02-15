@@ -1,5 +1,7 @@
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
+from django.contrib.humanize.templatetags.humanize import naturaltime
+
 
 # Create your models here.
 
@@ -16,13 +18,13 @@ class Site(models.Model):
     def current_vis(self):
         site = Observation.objects.filter(site=self.site_code).order_by('-when_observed')
         try:
-            return {"obs1":{"Date": str(site[0].when_observed)[: 16],"Vis": site[0].visibility,"User": site[0].user.username},"obs2": {"Date": str(site[1].when_observed)[: 16],"Vis": site[1].visibility,"User": site[1].user.username},"obs3": {"Date": str(site[2].when_observed)[: 16],"Vis": site[2].visibility,"User": site[2].user.username}}
+            return {"obs1":{"Date": str(naturaltime(site[0].when_observed)),"Vis": site[0].visibility,"User": site[0].user.username},"obs2": {"Date": str(naturaltime(site[1].when_observed)),"Vis": site[1].visibility,"User": site[1].user.username},"obs3": {"Date": str(naturaltime(site[2].when_observed)),"Vis": site[2].visibility,"User": site[2].user.username}}
         except IndexError:
             try:
-                return {"obs1":{"Date": str(site[0].when_observed)[: 16],"Vis": site[0].visibility,"User": site[0].user.username},"obs2": {"Date": str(site[1].when_observed)[: 16],"Vis": site[1].visibility,"User": site[1].user.username},"obs3": {"Date": "No data ","Vis": "No data ","User": "No data "}}
+                return {"obs1":{"Date": str(naturaltime(site[0].when_observed)),"Vis": site[0].visibility,"User": site[0].user.username},"obs2": {"Date": str(naturaltime(site[1].when_observed)),"Vis": site[1].visibility,"User": site[1].user.username},"obs3": {"Date": "No data ","Vis": "No data ","User": "No data "}}
             except IndexError:
                 try:
-                    return {"obs1":{"Date": str(site[0].when_observed)[: 16],"Vis": site[0].visibility,"User": site[0].user.username},"obs2": {"Date": "No data ","Vis": "No data ","User": "No data "},"obs3": {"Date": "No data ","Vis": "No data ","User": "No data "}}
+                    return {"obs1":{"Date": str(naturaltime(site[0].when_observed)),"Vis": site[0].visibility,"User": site[0].user.username},"obs2": {"Date": "No data ","Vis": "No data ","User": "No data "},"obs3": {"Date": "No data ","Vis": "No data ","User": "No data "}}
 
                 except IndexError:
                     return {"obs1":{"Date": "No data ","Vis": "No data ","User": "No data "},"obs2": {"Date": "No data ","Vis": "No data ","User": "No data "},"obs3": {"Date": "No data ","Vis": "No data ","User": "No data "}}
