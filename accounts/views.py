@@ -55,7 +55,7 @@ def signup(request):
                     [user.email]
                 )
                 email_message.send()
-                return render(request, 'accounts/login.html', {'error': "Check your email for an activation link."})
+                return render(request, 'accounts/login.html', {'error': "Check your email for an activation link. This may take up to 5 minutes."})
         else:
             return render(request, 'accounts/signup.html', {'error': "Passwords must match"})
     else:
