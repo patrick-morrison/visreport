@@ -123,7 +123,7 @@
                             animate: true,
                             duration: 1.5
                         });
-                        btn.state('zoom-to-perth');    // change state on click!
+                        btn.state('zoom-to-exmouth');    // change state on click!
                     }
                 }, {
                     stateName: 'zoom-to-perth',
@@ -136,7 +136,18 @@
                         });
                         btn.state('zoom-to-southwest');
                     }
-                }]
+                }, {
+                    stateName: 'zoom-to-exmouth',        // name the state
+                    icon: '<strong>EX</strong>',               // and define its properties
+                    title: 'Zoom to Exmouth',      // like its title
+                    onClick: function (btn, map) {       // and its callback
+                        map.setView([-22.65, 113.5], 8, {
+                            animate: true,
+                            duration: 1.5
+                        });
+                        btn.state('zoom-to-perth');    // change state on click!
+                    }
+                }, ]
             });
 
             stateChangingButton.addTo(map);
