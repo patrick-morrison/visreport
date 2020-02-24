@@ -106,8 +106,8 @@
 
         function getColor(v) {
             return v > 15.9 ? '#0275d8' :
-                   v > 7.9 ? '#359b91' :
-                   v > 2.9 ? '#e5834e' :
+                   v > 7.9 ? '#5cb85c' :
+                   v > 2.9 ? '#f0ad4e' :
                    v > 0.1 ? '#d9534f' :
                             '#868e96';
         }
@@ -123,31 +123,20 @@
                             animate: true,
                             duration: 1.5
                         });
-                        btn.state('zoom-to-exmouth');    // change state on click!
+                        btn.state('zoom-to-perth');    // change state on click!
                     }
                 }, {
                     stateName: 'zoom-to-perth',
                     icon: 'fa-home',
                     title: 'Zoom to a Perth',
                     onClick: function (btn, map) {
-                        map.setView([-32.00, 115.64], 10, {
+                        map.setView([-32.00,115.64], 10, {
                             animate: true,
                             duration: 1.5
                         });
                         btn.state('zoom-to-southwest');
                     }
-                }, {
-                    stateName: 'zoom-to-exmouth',        // name the state
-                    icon: '<strong>EX</strong>',               // and define its properties
-                    title: 'Zoom to Exmouth',      // like its title
-                    onClick: function (btn, map) {       // and its callback
-                        map.setView([-22.65, 113.5], 8, {
-                            animate: true,
-                            duration: 1.5
-                        });
-                        btn.state('zoom-to-perth');    // change state on click!
-                    }
-                }, ]
+                }]
             });
 
             stateChangingButton.addTo(map);
@@ -158,8 +147,8 @@
             var div = L.DomUtil.create("div", "legend");
             //div.innerHTML += "<h4>Scale</h4>";
             div.innerHTML += '<i style="background: #d9534f"></i><span>&lt; 3 m</span><br>';
-            div.innerHTML += '<i style="background: #e5834e"></i><span>3-8m</span><br>';
-            div.innerHTML += '<i style="background: #359b91"></i><span>8-15m</span><br>';
+            div.innerHTML += '<i style="background: #f0ad4e"></i><span>3-8m</span><br>';
+            div.innerHTML += '<i style="background: #5cb85c"></i><span>8-15m</span><br>';
             div.innerHTML += '<i style="background: #0275d8"></i><span>15-25m</span><br>';        
             return div;
             };
