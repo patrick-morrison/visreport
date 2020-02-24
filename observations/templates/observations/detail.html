@@ -168,7 +168,7 @@
 <div class="container">
   <table class="table table-responsive-sm" id='table'>
     {% if not user.is_authenticated %}
-    <caption><a href="{% url 'login' %}">Sign in to add reports</a></caption>
+    <caption class="text-left"><a href="{% url 'login' %}">Sign in to add reports</a></caption>
     {% endif %}
     <thead>
       <tr>
