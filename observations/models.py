@@ -11,6 +11,10 @@ class Site(models.Model):
     site_description = models.TextField(max_length=225, null=True, blank=True)
     site_location = models.PointField()
     site_date_added = models.DateField()
+    site_region_primary = models.CharField(max_length=50, null=True, blank=True)
+    site_region_secondary = models.CharField(max_length=50, null=True, blank=True)
+    external_link = models.CharField(max_length=255, null=True, blank=True)
+    external_link_name = models.CharField(max_length=50, null=True, blank=True)
     
     def __str__(self):
         return self.site_name + " (" + self.site_code + ")"
