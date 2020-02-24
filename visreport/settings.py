@@ -152,6 +152,7 @@ LEAFLET_CONFIG = {
   'MIN_ZOOM': 7,
   'MAX_ZOOM': 12,
   'RESET_VIEW': False,
+  'tap': True,
 }
 
 try:
