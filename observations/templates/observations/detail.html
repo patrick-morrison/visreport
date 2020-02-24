@@ -63,7 +63,10 @@
   <br />
   <h1 class="display-4">{{Sites.site_name}} <small class="text-muted"> ({{Sites.site_code}})</small> </h1>
   <hr />
-  <p class="lead text-muted">{{Sites.site_description}}</p>
+  <p class="lead text-muted">{{Sites.site_description}}.</p>
+  {% if Sites.external_link%}
+  <p class="lead text-muted">More info at <a href = "{{Sites.external_link}}">{{Sites.external_link_name}}</a></p>
+  {% endif %}
 </div>
 </div>
 
