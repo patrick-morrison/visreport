@@ -23,6 +23,7 @@ from observations.views import sites_view, reports_view, MapView
 
 urlpatterns = [
     url(r'^$', MapView.as_view(), name='map'),
+    path('list', views.observations_list, name = "list"),
     path('about/', views.about, name='about'),
     path('accounts/',include('accounts.urls')),
     path('admin/', admin.site.urls),

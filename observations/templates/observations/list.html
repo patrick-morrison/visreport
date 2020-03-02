@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{%if error%}
+<br />
+{{error}}
+<br />
+{%endif%}
+
+
+<head>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+</head>
+
+<script>
+    $(document).ready(function () {
+        var $window = $(window);
+
+        // Function to handle changes to style classes based on window width
+        function checkWidth() {
+            if ($window.width() < 992) {
+                $('#table').addClass('table-sm');
+            };
+
+            if ($window.width() >= 992) {
+                $('#table').removeClass('table-sm');
+            }
+        }
+        // Execute on load
+        checkWidth();
+        var reports = "{% url 'reports-json' %}"
+        console.log(reports)
+        // Bind event listener
+        $(window).resize(checkWidth);
+    });
+
+</script>
+
+{% if Observations.count > 0%}
+<div class="container">
+    <table class="table table-responsive-sm table-hover" id='table'>
+        <thead>
+            <caption>All {{Observations.count}} reports</caption>
+            <tr>
+                <th scope="col">Date/Time</th>
+                <th scope="col">Site</th>
+                <th scope="col" class="d-none d-lg-table-cell">Visibility (m)</th>
+                <th class="d-lg-none" scope="col">Vis (m)</th>
+                <th scope="col">Conditions</th>
+                <th class="d-none d-lg-table-cell" scope="col">Comment</th>
+                <th scope="col">User</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {%for Observation in Observations%}
+
+            {%if Observation.visibility > 15.9%}
+            <tr class="table-primary">
+              {%elif Observation.visibility > 7.9%}
+            <tr class="table-success">
+              {%elif Observation.visibility > 2.9%}
+            <tr class="table-warning">
+              {%else%}
+            <tr class="table-danger">
+              {%endif%}
+
+                <th scope="row">{{Observation.when_observed}}</a></th>
+                <td class="d-none d-lg-table-cell"><a style="color:black;"
+                        href="/{{Observation.site.site_code}}">{{Observation.site.site_name}}
+                        <small><i>({{Observation.site.site_code}})</i></small></a></td>
+                <td class="d-lg-none"><a style="color:black;"
+                        href="/{{Observation.site.site_code}}"><b>{{Observation.site.site_code}}</b></a></td>
+                <td>{{Observation.visibility}}</td>
+                <td>{{Observation.conditions}}</td>
+                <td class="d-none d-lg-table-cell">{{Observation.comments}}</td>
+                <td>{{Observation.user.username}}</td>
+
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+{%endif%}
+{% endblock %}
