@@ -53,3 +53,11 @@ def delete(request, pk):
             return redirect("/"+str(observation.site.site_code))
         else:
             return redirect("/"+str(observation.site.site_code))
+
+def observations_list(request):
+    if request.method == 'POST':
+        return redirect('list')
+    else:
+        user = request.user
+        observations = Observation.objects.all().order_by('-when_observed')
+        return render(request, 'observations/list.html', {"Observations":observations})            
