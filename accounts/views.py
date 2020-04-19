@@ -55,7 +55,7 @@ def signup(request):
                     [user.email]
                 )
                 email_message.send()
-                return render(request, 'accounts/login.html', {'error': "Check your email for an activation link. This may take up to 5 minutes."})
+                return render(request, 'accounts/login.html', {'error': "Check your email for an activation link. This may take up to 5 minutes. There's been a couple of issues when lots of people sign up on the same day, email me at vis.report.app@gmail.com if nothing comes through."})
         else:
             return render(request, 'accounts/signup.html', {'error': "Passwords must match"})
     else:
