@@ -78,7 +78,7 @@
         <a class="navbar-brand" href="{%url 'map' %}">Vis.Report</a>
         <ul class="nav navbar-nav ml-auto">
         <li class="nav-item">
-          {% if request.get_full_path == "/" %}
+          {% if request.get_full_path != "/list" %}
           <a class="nav-link mr-3" href="{%url 'list'%}">List View</a>
           {%endif%}
           {% if request.get_full_path == "/list" %}

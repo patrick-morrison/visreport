@@ -94,7 +94,8 @@
 
 
         function geojsonMarkerOptions(feature) {
-            return {
+            if (vis[feature.properties.pk.toString()]['recent'] == 'True') {
+                return {
                 radius: 16,
                 fillColor: getColor(vis[feature.properties.pk.toString()]['obs1']['Vis']),
                 color: "#000",
@@ -102,7 +103,16 @@
                 opacity: 1,
                 fillOpacity: 1,
             };
-        }
+            } else {
+                return {
+                radius: 16,
+                fillColor: getColor(vis[feature.properties.pk.toString()]['obs1']['Vis']),
+                color: getColor(vis[feature.properties.pk.toString()]['obs1']['Vis']),
+                weight: 1,
+                opacity: 0.3,
+                fillOpacity: 0.3,
+            };
+        }}
 
         function getColor(v) {
             return v > 15.9 ? '#0275d8' :
@@ -149,7 +159,8 @@
             div.innerHTML += '<i style="background: #d9534f"></i><span>&lt; 3 m</span><br>';
             div.innerHTML += '<i style="background: #f0ad4e"></i><span>3-8m</span><br>';
             div.innerHTML += '<i style="background: #5cb85c"></i><span>8-15m</span><br>';
-            div.innerHTML += '<i style="background: #0275d8"></i><span>15-25m</span><br>';        
+            div.innerHTML += '<i style="background: #0275d8"></i><span>15-25m</span><br>';
+            div.innerHTML += '<i style="background: #868e96"></i><span>No recent</span><br>';        
             return div;
             };
 
