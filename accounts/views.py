@@ -1,4 +1,6 @@
 from django.shortcuts import render
+import json
+import urllib
 
 # Create your views here.
 
@@ -32,32 +34,48 @@ def login(request):
 
 def signup(request):
     if request.method == "POST":
-        if request.POST['password1'] == request.POST['password2']:
-            try:
-                user = User.objects.get(username = request.POST['username'])
-                return render(request, 'accounts/signup.html', {'error': "Username has already been taken"})
-            except User.DoesNotExist: 
-                user = User.objects.create_user(request.POST['username'], password =request.POST['password1'], email =request.POST['email'], is_active = False)
-                user.save()
-                current_site=get_current_site(request)
-                message=render_to_string('accounts/activate.html',
-                {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': generate_token.make_token(user)
-                }
-                )
-                email_message=EmailMessage(
-                    'Activate your Vis.Report Account',
-                    message,
-                    settings.EMAIL_HOST_USER,
-                    [user.email]
-                )
-                email_message.send()
-                return render(request, 'accounts/login.html', {'error': "Check your email for an activation link. This may take up to 5 minutes. There's been a couple of issues when lots of people sign up on the same day, email me at vis.report.app@gmail.com if nothing comes through."})
+
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        url = 'https://www.google.com/recaptcha/api/siteverify'
+        values = {
+            'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+            'response': recaptcha_response
+        }
+        data = urllib.parse.urlencode(values).encode()
+        req =  urllib.request.Request(url, data=data)
+        response = urllib.request.urlopen(req)
+        result = json.loads(response.read().decode())
+
+        if result['success']:
+
+            if request.POST['password1'] == request.POST['password2']:
+                try:
+                    user = User.objects.get(username = request.POST['username'])
+                    return render(request, 'accounts/signup.html', {'error': "Username has already been taken"})
+                except User.DoesNotExist: 
+                    user = User.objects.create_user(request.POST['username'], password =request.POST['password1'], email =request.POST['email'], is_active = False)
+                    user.save()
+                    current_site=get_current_site(request)
+                    message=render_to_string('accounts/activate.html',
+                    {
+                        'user': user,
+                        'domain': current_site.domain,
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token': generate_token.make_token(user)
+                    }
+                    )
+                    email_message=EmailMessage(
+                        'Activate your Vis.Report Account',
+                        message,
+                        settings.EMAIL_HOST_USER,
+                        [user.email]
+                    )
+                    email_message.send()
+                    return render(request, 'accounts/login.html', {'error': "Check your email for an activation link. This may take up to 5 minutes. There's been a couple of issues when lots of people sign up on the same day, email me at vis.report.app@gmail.com if nothing comes through."})
+            else:
+                return render(request, 'accounts/signup.html', {'error': "Passwords must match"})
         else:
-            return render(request, 'accounts/signup.html', {'error': "Passwords must match"})
+            return render(request, 'accounts/signup.html', {'error': "Captcha failed"})
     else:
         return render(request, 'accounts/signup.html')
 
