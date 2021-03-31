@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import json
-import urllib
-
+import urllib.request
+import urllib.parse
 # Create your views here.
 
 from django.shortcuts import render, redirect
