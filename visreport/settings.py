@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import sys
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,8 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.72.38', '127.0.0.1', 'localhost']
-
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # Application definition
 
@@ -85,16 +86,19 @@ SERIALIZATION_MODULES = {
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'visreport',
-        'USER': 'postgres',
-        'PASSWORD': 'postgrespassword',
-        'HOST': "localhost",
-        'PORT': 5432,
+if DEVELOPMENT_MODE is True:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
     }
-}
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
 
 
 # Password validation
@@ -154,6 +158,18 @@ LEAFLET_CONFIG = {
   'RESET_VIEW': False,
   'tap': True,
 }
+
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
+GOOGLE_RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCH_SECRET_KEY")
+
+DEBUG = os.getenv("DEBUG", "False") == "True"
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+
+EMAIL_HOST=os.getenv("EMAIL_HOST")
+EMAIL_HOST_USER=os.getenv("EMAIL_USER")
+EMAIL_HOST_PASSWORD=os.getenv("EMAIL_PASSWORD")
+EMAIL_USE_TLS=True
+EMAIL_PORT=os.getenv("EMAIL_PORT")
 
 try:
     from .local_settings import *
