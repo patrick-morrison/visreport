@@ -21,7 +21,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
+GOOGLE_RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCH_SECRET_KEY")
+
+DEBUG = os.getenv("DEBUG", "False") == "True"
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+
+EMAIL_HOST=os.getenv("EMAIL_HOST")
+EMAIL_HOST_USER=os.getenv("EMAIL_USER")
+EMAIL_HOST_PASSWORD=os.getenv("EMAIL_PASSWORD")
+EMAIL_USE_TLS=True
+EMAIL_PORT=os.getenv("EMAIL_PORT")
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
@@ -83,23 +93,6 @@ SERIALIZATION_MODULES = {
   }
 
 
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-if DEVELOPMENT_MODE is True:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-    }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if os.getenv("DATABASE_URL", None) is None:
-        raise Exception("DATABASE_URL environment variable not defined")
-    DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-    }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -149,7 +142,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LEAFLET_CONFIG = {
-  'TILES': 'https://api.mapbox.com/styles/v1/patrickmorrison1498/ck603l62s0mbi1io55kc8hif5/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicGF0cmlja21vcnJpc29uMTQ5OCIsImEiOiJjazNoNDQ4dG4wMmppM21ya3BtbWc5am9iIn0.nLex7QBehGELoOf7j9OqHg',
+  'TILES': os.getenv("TILES"),
   'SPATIAL_EXTENT': (124,-35.5 ,113.3,-30),
   'DEFAULT_CENTER': (-32.00,115.64),
   'DEFAULT_ZOOM': 10,
@@ -158,18 +151,6 @@ LEAFLET_CONFIG = {
   'RESET_VIEW': False,
   'tap': True,
 }
-
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
-GOOGLE_RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCH_SECRET_KEY")
-
-DEBUG = os.getenv("DEBUG", "False") == "True"
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
-
-EMAIL_HOST=os.getenv("EMAIL_HOST")
-EMAIL_HOST_USER=os.getenv("EMAIL_USER")
-EMAIL_HOST_PASSWORD=os.getenv("EMAIL_PASSWORD")
-EMAIL_USE_TLS=True
-EMAIL_PORT=os.getenv("EMAIL_PORT")
 
 try:
     from .local_settings import *
