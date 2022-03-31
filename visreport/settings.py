@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'observations.apps.ObservationsConfig',
     'accounts.apps.AccountsConfig',
     'leaflet',
+    'import_export'
 ]
 
 MIDDLEWARE = [
