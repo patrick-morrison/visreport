@@ -1,6 +1,8 @@
 # Vis.report
 [_Visibility reports for divers to share conditions. Configured by default for Perth, Western Australia_](https://vis.report)
 
+**UPDATE 2022** This has been superseded by version 2: https://github.com/patrick-morrison/visreport2/
+
 Written in python/html, using GeoDjango, PostGIS extension of Postgresql, and the Leaflet mapping library.
 Started in January 2020 by Patrick Morrison
 
